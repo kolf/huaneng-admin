@@ -9,5 +9,5 @@ export const zhCN_title = {
   'title.account': '个人设置',
   'title.project': '项目管理',
   'title.notFount': '404',
-  
+
 };

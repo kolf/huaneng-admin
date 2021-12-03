@@ -9,9 +9,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { findDOMNode } from "react-dom";
 import OperationModal from "./components/OperationModal";
 import { useCreate, useUpdate } from "@/api/request";
-import { useBatchDeleteProject, useGetProjects } from "@api";
+import { useBatchDeleteProject, useGetProjects } from "@/api";
 
-const TableList= () => {
+const TableList = () => {
   const { formatMessage } = useLocale();
 
   const addBtn = useRef(null);
@@ -215,12 +215,12 @@ const TableList= () => {
     <PageContainer>
       <ProTable<API.Project>
         headerTitle={formatMessage({
-                id: 'app.project.title',
-                defaultMessage: '项目管理',
-              })}
+          id: "app.project.title",
+          defaultMessage: "项目管理",
+        })}
         actionRef={actionRef}
         rowKey="id"
-        options={{reload: false}}
+        options={{ reload: false }}
         toolBarRender={() => [
           <Button type="primary" key="primary" onClick={showModal}>
             <PlusOutlined /> <LocaleFormatter id="gloabal.tips.create" />
@@ -263,8 +263,11 @@ const TableList= () => {
         <FooterToolbar
           extra={
             <div>
-              <LocaleFormatter id="app.project.chosen" defaultMessage="已选择" />{' '}
-              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{' '}
+              <LocaleFormatter
+                id="app.project.chosen"
+                defaultMessage="已选择"
+              />{" "}
+              <a style={{ fontWeight: 600 }}>{selectedRowsState.length}</a>{" "}
               <LocaleFormatter id="app.project.item" defaultMessage="项" />
             </div>
           }
@@ -273,11 +276,10 @@ const TableList= () => {
             onClick={async () => {
               await handleRemove(selectedRowsState);
               setSelectedRows([]);
-                  refetch();
-
+              refetch();
             }}
           >
-            <LocaleFormatter id="app.project.batchDeletion"  />
+            <LocaleFormatter id="app.project.batchDeletion" />
           </Button>
         </FooterToolbar>
       )}

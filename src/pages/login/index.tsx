@@ -40,12 +40,10 @@ const LoginForm: FC = () => {
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.header}>
-          <Link to="/">
-            <LogoSvg className={styles.logo} />
-            <span className={styles.title}>项目管理</span>
-          </Link>
+          <LogoSvg className={styles.logo} />
+          <span className={styles.title}>中国华能</span>
         </div>
-        <div className={styles.desc}>全新技术栈(React\Recoil\React Query\React Hooks\Vite)的后台管理系统</div>
+        <div className={styles.desc}>智能调运管理后台</div>
       </div>
       <div className={styles.main}>
         <Form<LoginParams> onFinish={onFinished} initialValues={initialValues}>
