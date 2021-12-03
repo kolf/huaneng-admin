@@ -10,7 +10,6 @@ export interface CurrentUserResult {
   role: Role;
 }
 
-
 export interface User {
   username: string;
 
@@ -28,15 +27,13 @@ export interface User {
   /** menu collapsed status */
   collapsed: boolean;
 
-  /** notification count */
-  noticeCount: number;
-
   /** user's language */
   locale: Locale;
-
-  /** Is first time to view the site ? */
-  newUser: boolean;
-
   settings: PureSettings;
   avatar: string;
+}
+
+export interface VcodeResult {
+  uuid: string;
+  img: string;
 }

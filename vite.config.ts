@@ -38,15 +38,19 @@ export default ({ command } : { command: string}) => {
         '@ant-design/icons',
       ],
     },
-    // server: {
-    //   proxy: {
-    //     '/api': {
-    //       target: 'http://127.0.0.1:7770',
-    //       changeOrigin: true,
-    //       rewrite: path => path.replace(/^\/api/, '')
-    //     }
-    //   },
-    // },
+    server: {
+      proxy: {
+        '/auth': {
+          target: 'http://47.93.241.1:8080',
+          changeOrigin: true,
+          rewrite: path => path.replace(/^\/auth/, '')
+        },
+        '/api': {
+          target: 'http://47.93.241.1:8080',
+          changeOrigin: true,
+        }
+      },
+    },
     plugins: [
       reactRefresh(),
       svgr(),

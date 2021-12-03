@@ -6,17 +6,20 @@ export interface LoginParams {
   username: string;
   /** 用户密码 */
   password: string;
+  captcha: string;
+  uuid: string;
 }
 
 export interface LoginResult {
   /** auth token */
   token: string;
-  username: string;
-  role: Role;
+  sysUser: {
+    userName: string;
+  };
 }
 
 export interface LogoutParams {
   token: string;
 }
 
-export interface LogoutResult { }
+export interface LogoutResult {}

@@ -3,7 +3,7 @@ import Driver from 'driver.js';
 import 'driver.js/dist/driver.min.css';
 import './index.less';
 import { useLocale } from '@/locales';
-import { userState } from "@/stores/user";
+import { userState } from '@/stores/user';
 import { useRecoilState } from 'recoil';
 
 export const useGuide = () => {
@@ -44,15 +44,13 @@ export const useGuide = () => {
             position: 'bottom',
             offset: -200
           }
-        },
-        
+        }
       ]);
 
       localStorage.setItem('newUser', 'false');
       setUser({
-        ...user,
-        newUser: false
-      })
+        ...user
+      });
       driver.current.start();
       console.log('guide started');
     }, 1000);
