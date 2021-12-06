@@ -8,7 +8,7 @@ import { Location } from 'history';
 import { useGetVcode, useLogin } from '@/api';
 
 import styles from './index.module.less';
-import { ReactComponent as LogoSvg } from '@/assets/logo/logo.svg';
+import { ReactComponent as LogoSvg } from '@/assets/logo.svg';
 
 const LoginForm: FC = () => {
   const loginMutation = useLogin();
@@ -48,7 +48,7 @@ const LoginForm: FC = () => {
     <div className={styles.container}>
       <div className={styles.top}>
         <div className={styles.header}>
-          <LogoSvg className={styles.logo} />
+          {/* <LogoSvg className={styles.logo} /> */}
           <span className={styles.title}>中国华能</span>
         </div>
         <div className={styles.desc}>智能调运管理后台</div>

@@ -47,11 +47,8 @@ const Menus = () => {
   ];
 
   const handleSearch = values => {
-    console.log(values, 'value');
     setParams({ ...params, ...values });
   };
-
-  console.log(data, 'data');
 
   return (
     <>

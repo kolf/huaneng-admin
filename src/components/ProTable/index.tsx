@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Table, Form, Row, Col, Input, Button, Card } from 'antd';
 import { TableColumnProps, FormItemProps } from 'antd';
+import type { ColumnGroupType } from 'antd/lib/table/interface';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import styles from './index.module.less';
 
@@ -17,13 +18,12 @@ type SearchProps = {
   onFinish: (values: any) => void;
 };
 
-export type ColumnsProps = {
-  title: string;
-  dataIndex: string;
-} & FieldProps;
+export type ColumnsProps = ColumnGroupType<FieldProps>;
 
 interface ProTableProps {
+  isTree?: boolean;
   initialValues?: any;
+  rowKey?: string;
   columns: ColumnsProps[];
   headerTitle: string;
   loading: boolean;
@@ -39,13 +39,12 @@ const ProTable: React.FC<ProTableProps> = ({
   loading,
   dataSource,
   search,
-  toolBarRender
+  toolBarRender,
+  rowKey = 'id'
 }) => {
   const [expand, setExpand] = useState(false);
   const [form] = Form.useForm();
   const fields = useMemo(() => columns?.filter(col => col.valueType), [columns]);
-
-  console.log(fields, 'fields');
 
   const getFields = useCallback(() => {
     const count = expand ? fields.length : 5;
@@ -70,6 +69,18 @@ const ProTable: React.FC<ProTableProps> = ({
     search.onFinish(propsValues);
   };
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    onSelect: (record, selected, selectedRows) => {
+      console.log(record, selected, selectedRows);
+    },
+    onSelectAll: (selected, selectedRows, changedRows) => {
+      console.log(selected, selectedRows, changedRows);
+    }
+  };
+
   // console.log(dataSource, 'dataSource');
 
   return (
@@ -78,51 +89,52 @@ const ProTable: React.FC<ProTableProps> = ({
         <Form form={form} onFinish={onFinish} initialValues={initialValues}>
           <Row gutter={24}>
             {getFields()}
-
             <Col span={8} style={{ textAlign: 'right', paddingRight: 4 }}>
-              {search.collapsed && (
-                <>
-                  <a
-                    style={{ fontSize: 12 }}
-                    onClick={() => {
-                      setExpand(!expand);
-                    }}
-                  >
-                    {expand ? (
-                      <>
-                        <UpOutlined />
-                        <span className={styles.expandBtn}>收缩</span>
-                      </>
-                    ) : (
-                      <>
-                        <DownOutlined />
-                        <span className={styles.expandBtn}>展开</span>
-                      </>
-                    )}
-                  </a>
-                </>
-              )}
-              <Button type="primary" htmlType="submit">
-                查询
-              </Button>
-              <Button
-                style={{ margin: '0 8px' }}
-                onClick={() => {
-                  form.resetFields();
-                }}
-              >
-                重置
-              </Button>
+              <div style={{ marginBottom: 24 }}>
+                {search.collapsed && (
+                  <>
+                    <a
+                      style={{ fontSize: 12 }}
+                      onClick={() => {
+                        setExpand(!expand);
+                      }}
+                    >
+                      {expand ? (
+                        <>
+                          <UpOutlined />
+                          <span className={styles.expandBtn}>收缩</span>
+                        </>
+                      ) : (
+                        <>
+                          <DownOutlined />
+                          <span className={styles.expandBtn}>展开</span>
+                        </>
+                      )}
+                    </a>
+                  </>
+                )}
+                <Button type="primary" htmlType="submit">
+                  查询
+                </Button>
+                <Button
+                  style={{ margin: '0 8px' }}
+                  onClick={() => {
+                    form.resetFields();
+                  }}
+                >
+                  重置
+                </Button>
+              </div>
             </Col>
           </Row>
         </Form>
       </div>
 
       <Card title={headerTitle} bordered={false} extra={toolBarRender && toolBarRender()}>
-        <Table columns={columns} loading={loading} dataSource={dataSource} />
+        <Table rowKey={rowKey} columns={columns} loading={loading} dataSource={dataSource} />
       </Card>
     </>
   );
 };
 
-export default ProTable;
+export default React.memo(ProTable);

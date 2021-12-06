@@ -1,8 +1,8 @@
 import React from 'react';
 import ProTable from '@/components/ProTable';
 
-const Menus = () => {
+const Dashboard = () => {
   return <>首页</>;
 };
 
-export default Menus;
+export default Dashboard;

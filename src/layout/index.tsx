@@ -3,7 +3,6 @@ import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 import { HomeOutlined } from '@ant-design/icons';
 import RightContent from './components/RightContent';
-
 import { userState } from '@/stores/user';
 import { useRecoilState } from 'recoil';
 import { getCurrentMenus } from '@/api';
@@ -44,6 +43,7 @@ const Layout: FC = () => {
       fixSiderbar
       fixedHeader
       title="中国华能"
+      iconfontUrl='//at.alicdn.com/t/font_2990028_zmtyfvj6ftp.js'
       menu={{
         request: async () => {
           const res = await getCurrentMenus();
@@ -51,7 +51,7 @@ const Layout: FC = () => {
             {
               path: '/dashboard',
               name: '首页',
-              icon: <HomeOutlined />
+              icon: 'icon-shouye'
             },
             ...makeData(res.data)
           ];
