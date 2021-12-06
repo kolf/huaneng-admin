@@ -1,11 +1,6 @@
 interface MenuItem {
   /** menu item name */
   name: string;
-  /** menu labels */
-  label: {
-    zh_CN: string;
-    en_US: string;
-  };
   /** 图标名称
    *
    * 子子菜单不需要图标

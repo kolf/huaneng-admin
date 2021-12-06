@@ -1,7 +1,5 @@
 import type { UserConfigExport, ConfigEnv } from 'vite'
-import { loadEnv } from 'vite';
 import reactRefresh from '@vitejs/plugin-react-refresh'
-import { viteMockServe } from 'vite-plugin-mock'
 import { resolve } from 'path';
 import svgr from 'vite-plugin-svgr'
 import { getAliases } from "vite-aliases";
@@ -14,7 +12,7 @@ function pathResolve(dir: string) {
 }
 
 // https://vitejs.dev/config/
-export default ({ command } : { command: string}) => {
+export default ({ command }: { command: string }) => {
   console.log('command:',)
   return {
     resolve: {
@@ -43,7 +41,7 @@ export default ({ command } : { command: string}) => {
         '/auth': {
           target: 'http://47.93.241.1:8080',
           changeOrigin: true,
-          rewrite: path => path.replace(/^\/auth/, '')
+          rewrite: (path: string) => path.replace(/^\/auth/, '')
         },
         '/api': {
           target: 'http://47.93.241.1:8080',
@@ -54,24 +52,24 @@ export default ({ command } : { command: string}) => {
     plugins: [
       reactRefresh(),
       svgr(),
-      viteMockServe({
-        mockPath: 'mock',
-        supportTs: true,
-        watchFiles: true,
-        localEnabled: command === 'serve',
-        logger: true,
-      }),
-      // styleImport({
-      //   libs: [
-      //     {
-      //       libraryName: 'antd',
-      //       esModule: true,
-      //       resolveStyle: (name) => {
-      //         return `antd/es/${name}/style/index`;
-      //       },
-      //     },
-      //   ],
+      // viteMockServe({
+      //   mockPath: 'mock',
+      //   supportTs: true,
+      //   watchFiles: true,
+      //   localEnabled: command === 'serve',
+      //   logger: true,
       // }),
+      styleImport({
+        libs: [
+          {
+            libraryName: 'antd',
+            esModule: true,
+            resolveStyle: (name) => {
+              return `antd/es/${name}/style/index`;
+            },
+          },
+        ],
+      }),
     ],
     css: {
       modules: {

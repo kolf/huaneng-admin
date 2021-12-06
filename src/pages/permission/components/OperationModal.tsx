@@ -1,13 +1,7 @@
-import React, { FC, useEffect, useRef } from "react";
-import moment from "moment";
-import { Modal, Form, Input } from "antd";
-import ProForm, {
-  ModalForm,
-  ProFormText,
-  ProFormTextArea,
-} from "@ant-design/pro-form";
-import { useLocale } from "@/locales";
-
+import React, { FC, useEffect, useRef } from 'react';
+import moment from 'moment';
+import { Modal, Form, Input } from 'antd';
+import ProForm, { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 interface OperationModalProps {
   done: boolean;
   visible: boolean;
@@ -19,10 +13,10 @@ interface OperationModalProps {
 
 const formLayout = {
   labelCol: { span: 7 },
-  wrapperCol: { span: 13 },
+  wrapperCol: { span: 13 }
 };
 
-const OperationModal: FC<OperationModalProps> = (props) => {
+const OperationModal: FC<OperationModalProps> = props => {
   const formRef = useRef(null);
   const [form] = Form.useForm();
   const { visible, current, onCancel, onSubmit } = props;
@@ -39,7 +33,7 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     if (current) {
       form.setFieldsValue({
         ...current,
-        createdAt: current.createdAt ? moment(current.createdAt) : null,
+        createdAt: current.createdAt ? moment(current.createdAt) : null
       });
     }
   }, [current]);
@@ -55,32 +49,31 @@ const OperationModal: FC<OperationModalProps> = (props) => {
     }
   };
 
-  const modalFooter = { okText: "保存", onOk: handleSubmit, onCancel };
+  const modalFooter = { okText: '保存', onOk: handleSubmit, onCancel };
 
   const getModalContent = () => {
-    const { formatMessage } = useLocale();
     return (
       <Form {...formLayout} form={form} ref={formRef} onFinish={handleFinish}>
         <ProFormText
           name="name"
-          label={formatMessage({ id: "app.project.name" })}
+          label={'app.project.name'}
           rules={[
             {
               required: true,
-              message: formatMessage({ id: "app.project.nameRequired" }),
-            },
+              message: 'app.project.nameRequired'
+            }
           ]}
         ></ProFormText>
 
         <ProFormTextArea
           name="description"
-          label={formatMessage({ id: "app.project.description" })}
+          label={'app.project.description'}
           rules={[
             {
               required: true,
-              message: formatMessage({ id: "app.project.descriptionRequired" }),
-              min: 5,
-            },
+              message: 'app.project.descriptionRequired',
+              min: 5
+            }
           ]}
         />
       </Form>
@@ -89,9 +82,9 @@ const OperationModal: FC<OperationModalProps> = (props) => {
 
   return (
     <Modal
-      title={`项目${current ? "编辑" : "添加"}`}
+      title={`项目${current ? '编辑' : '添加'}`}
       width={640}
-      bodyStyle={{ padding: "28px 0 0" }}
+      bodyStyle={{ padding: '28px 0 0' }}
       destroyOnClose
       visible={visible}
       {...modalFooter}
