@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import { Role } from '@/models/login';
-import { User } from '@/models/user';
+import { User } from '@/models/me';
 import { getGlobalState } from '@/models';
 
 const initialState: User = {

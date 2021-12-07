@@ -1,42 +1,147 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetDepts } from '@/api';
-import { MenuParams } from '@/models/menu';
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { useGetDepts, deleteDept, updateDept, addDept } from '@/api';
+import { DeptParams } from '@/models/dept';
+import { Button, Space, Modal, Tag, message } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
+import IconFont from '@/components/IconFont';
+import UpdateForm from './components/UpdateForm';
 
-const Menus = () => {
-  const [params, setParams] = useState<MenuParams>({
-    // menuType: 1,
-    // orderNum: 1,
-    // menuName: '1'
-  });
-  const { data, error, loading, run } = useGetDepts(params);
+import modal from '@/utils/modal';
+import arrayToTree from '@/utils/arrayToTree';
 
-  const onAdd = useCallback(id => {
-    console.log(id);
+import { statusOptions } from '@/utils/options';
+
+const makeData = data => {
+  if (!data) {
+    return [];
+  }
+  return arrayToTree(data, { id: 'deptId', parentId: 'parentId' });
+};
+
+const defaultValues = {
+  status: 0,
+  isFrame: 0,
+  parentId: 0
+};
+
+const Depts = () => {
+  const [params, setParams] = useState<DeptParams>({});
+  const { data, error, loading } = useGetDepts(params);
+
+  const onAdd = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '添加部门',
+      width: 640,
+      content: (
+        <UpdateForm saveRef={r => (formRef = r)} initialValues={{ ...defaultValues, parentId: records.deptId }} />
+      ),
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await addDept(values);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`添加成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
   }, []);
+
+  const onDelete = useCallback(data => {
+    Modal.confirm({
+      title: '系统提示',
+      content: `是否确认删除名称为${data.deptName}的数据项？`,
+      onOk
+    });
+
+    async function onOk() {
+      try {
+        const res = await deleteDept(data.deptId);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`删除成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+    }
+  }, []);
+
+  const onUpdate = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '修改部门',
+      width: 640,
+      content: <UpdateForm saveRef={r => (formRef = r)} initialValues={records} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await updateDept({ ...values, deptId: records.deptId });
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`修改成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
+
+  const handleSearch = values => {
+    setParams({ ...params, ...values });
+  };
 
   const columns = [
     { title: '部门名称', dataIndex: 'deptName', valueType: 'input' },
     { title: '排序', dataIndex: 'orderNum' },
-    { title: '状态', dataIndex: 'status', valueType: 'input' },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'searchSelect',
+      options: statusOptions,
+      render(text) {
+        if (text === 0) {
+          return <Tag color="success">正常</Tag>;
+        }
+        if (text === 1) {
+          return <Tag color="error">停用</Tag>;
+        }
+      }
+    },
     { title: '创建时间', dataIndex: 'createTime' },
     {
       title: '操作',
-      dataIndex: 'oper',
-      render(records) {
+      dataIndex: 'deptId',
+      width: 160,
+      render(text, records) {
         return (
           <Space>
-            <a>
+            <a onClick={e => onUpdate(records)}>
               <EditOutlined />
               修改
             </a>
-            <a onClick={onAdd.bind(this, records)}>
+            <a onClick={e => onAdd(records)}>
               <PlusOutlined />
               新增
             </a>
-            <a>
+            <a onClick={e => onDelete(records)}>
               <DeleteOutlined />
               删除
             </a>
@@ -46,24 +151,31 @@ const Menus = () => {
     }
   ];
 
-  const handleSearch = values => {
-    setParams({ ...params, ...values });
-  };
-
   return (
     <>
       <ProTable
         headerTitle="部门列表"
+        rowKey="deptId"
         columns={columns}
         loading={loading}
-        dataSource={data?.data}
+        dataSource={makeData(data?.data)}
         search={{
           collapsed: false,
           onFinish: handleSearch
         }}
+        toolBarRender={() => [
+          <Space>
+            <Button type="primary" key="primary" onClick={() => onAdd({ deptId: 0 })}>
+              添加
+            </Button>
+            <Button icon={<ReloadOutlined />} onClick={() => handleSearch()}>
+              刷新
+            </Button>
+          </Space>
+        ]}
       />
     </>
   );
 };
 
-export default Menus;
+export default Depts;

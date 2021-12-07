@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import axios, { AxiosContext } from './api/request';
 
 import App from './App';
-import Loading from './components/loading';
+import Loading from './components/Loading';
 
 const AxiosProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const axiosValue = useMemo(() => {

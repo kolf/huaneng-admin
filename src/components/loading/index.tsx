@@ -4,7 +4,7 @@ import { Spin } from 'antd';
 const Loading: FC = () => {
   return (
     <Spin tip="加载中...">
-      <div />
+      <div style={{ minHeight: 300 }} />
     </Spin>
   );
 };

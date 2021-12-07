@@ -1,29 +1,130 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetUsers } from '@/api';
-import { MenuParams } from '@/models/menu';
-import { Button, Space, Tag } from 'antd';
-import { EditOutlined, DeleteOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
-import modal from '@/utils/modal';
+import { useGetUsers, deleteUser, updateUser, addUser } from '@/api';
+import { UserParams } from '@/models/me';
+import { Button, Space, Modal, Tag, message } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
+import UpdateForm from './components/UpdateForm';
 
-const Menus = () => {
-  const [params, setParams] = useState<MenuParams>({
-    // menuType: 1,
-    // orderNum: 1,
-    // menuName: '1'
-  });
-  const { data, error, loading, run } = useGetUsers(params);
+import modal from '@/utils/modal';
+import { statusOptions, sexEnum } from '@/utils/options';
+
+const makeData = data => {
+  if (!data) {
+    return [];
+  }
+  return data;
+};
+
+const defaultValues = {
+  menuType: 0,
+  status: 0,
+  isFrame: 0,
+  parentId: 0
+};
+
+const Users = () => {
+  const [params, setParams] = useState<UserParams>({});
+  const { data, error, loading } = useGetUsers(params);
+
+  const onAdd = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '添加用户',
+      width: 640,
+      content: (
+        <UpdateForm saveRef={r => (formRef = r)} initialValues={{ ...defaultValues, parentId: records.userId }} />
+      ),
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await addUser(values);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`添加成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
+
+  const onDelete = useCallback(data => {
+    Modal.confirm({
+      title: '系统提示',
+      content: `是否确认删除名称为${data.userName}的数据项？`,
+      onOk
+    });
+
+    async function onOk() {
+      try {
+        const res = await deleteUser(data.userId);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`删除成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+    }
+  }, []);
+
+  const onUpdate = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '修改用户',
+      width: 640,
+      content: <UpdateForm saveRef={r => (formRef = r)} initialValues={records} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await updateUser({ ...values, userId: records.userId });
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`修改成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
+
+  const setRoles = () => {};
+
+  const handleSearch = values => {
+    setParams({ ...params, ...values });
+  };
 
   const columns = [
     { title: '用户名称', dataIndex: 'userName', valueType: 'input' },
     { title: '用户昵称', dataIndex: 'nickName' },
     { title: '部门', dataIndex: 'deptId' },
-    { title: '手机号码', dataIndex: 'phone' },
-    { title: '性别', dataIndex: 'sex' },
+    { title: '手机号码', dataIndex: 'phone', valueType: 'input' },
+    {
+      title: '性别',
+      dataIndex: 'sex',
+      render(text) {
+        return sexEnum[text];
+      }
+    },
     {
       title: '状态',
       dataIndex: 'status',
-      valueType: 'input',
+      valueType: 'searchSelect',
+      options: statusOptions,
       render(text) {
         if (text === 0) {
           return <Tag color="success">正常</Tag>;
@@ -31,21 +132,21 @@ const Menus = () => {
         if (text === 1) {
           return <Tag color="error">停用</Tag>;
         }
-        return text + '000';
       }
     },
-    { title: '创建时间', dataIndex: 'createTime' },
+    { title: '创建时间', dataIndex: 'createTime', valueType: 'dateRange' },
     {
       title: '操作',
       dataIndex: 'userId',
+      width: 190,
       render(text, records) {
         return (
           <Space>
-            <a onClick={updateUser.bind(this, records)}>
+            <a onClick={onUpdate.bind(this, records)}>
               <EditOutlined />
               修改
             </a>
-            <a>
+            <a onClick={onDelete.bind(this, records)}>
               <DeleteOutlined />
               删除
             </a>
@@ -59,48 +160,26 @@ const Menus = () => {
     }
   ];
 
-  const updateUser = useCallback(() => {
-    modal({
-      title: '修改用户',
-      content: <div>111</div>
-    });
-  }, []);
-
-  const addUser = useCallback(() => {
-    modal({
-      title: '添加用户',
-      content: <div>111</div>
-    });
-  }, []);
-
-  const setRoles = useCallback(id => {
-    modal({
-      title: '分配角色',
-      content: <div>111</div>
-    });
-  }, []);
-
-  const handleSearch = (values?: any) => {
-    console.log(values, 'value');
-    setParams({ ...params, ...values });
-  };
-
   console.log(data, 'data');
 
   return (
     <>
       <ProTable
         headerTitle="用户列表"
+        rowKey="userId"
         columns={columns}
         loading={loading}
-        dataSource={data?.list}
+        dataSource={makeData(data?.list)}
+        pagination={{
+          total: data?.totalCount
+        }}
         search={{
           collapsed: false,
           onFinish: handleSearch
         }}
         toolBarRender={() => [
           <Space>
-            <Button type="primary" key="primary" onClick={() => addUser()}>
+            <Button type="primary" key="primary" onClick={() => onAdd({ userId: 0 })}>
               添加
             </Button>
             <Button icon={<ReloadOutlined />} onClick={() => handleSearch()}>
@@ -113,4 +192,4 @@ const Menus = () => {
   );
 };
 
-export default Menus;
+export default Users;

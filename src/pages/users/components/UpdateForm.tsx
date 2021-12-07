@@ -4,7 +4,7 @@ import IconSelect from '@/components/IconSelect';
 import Loading from '@/components/Loading';
 import { useGetMenus } from '@/api';
 import arrayToTree from '@/utils/arrayToTree';
-import { statusOptions } from '@/utils/options';
+import { statusOptions, sexOptions } from '@/utils/options';
 const { TreeNode } = TreeSelect;
 const layout = {
   labelCol: { span: 6 },
@@ -76,49 +76,35 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       {...layout}
       onValuesChange={newValue => setValues({ ...values, ...newValue })}
     >
-      <Form.Item name="parentId" label="上级菜单" rules={[{ required: true }]}>
-        <TreeSelect>
-          <TreeNode key={0} value={0} title="根目录">
-            {data?.data && renderTreeNodeList(arrayToTree(data.data, { parentId: 'parentId', id: 'menuId' }))}
-          </TreeNode>
-        </TreeSelect>
+      <Form.Item name="nickName" label="用户昵称" rules={[{ required: true }]}>
+        <Input placeholder="请输入" />
       </Form.Item>
-
-      <Form.Item name="menuType" label="菜单类型" rules={[{ required: true }]}>
-        <Radio.Group options={menuTypeOptions} />
+      <Form.Item name="deptId" label="归属部门" rules={[{ required: true }]}>
+        <Input placeholder="请输入" />
       </Form.Item>
-
-      {values.menuType !== 2 && (
-        <Form.Item name="icon" label="菜单图标">
-          <IconSelect />
-        </Form.Item>
-      )}
-
-      <Form.Item name="menuName" label="菜单名称" rules={[{ required: true }]}>
-        <Input placeholder="请输入菜单名称" />
+      <Form.Item name="phone" label="手机号码" rules={[{ required: true }]}>
+        <Input placeholder="请输入" />
       </Form.Item>
-
-      <Form.Item name="orderNum" label="显示排序" rules={[{ required: true }]}>
-        <InputNumber placeholder="0" />
+      <Form.Item name="email" label="邮箱">
+        <Input placeholder="请输入" />
       </Form.Item>
-
-      {values.menuType === 1 && [
-        <Form.Item name="isFrame" label="是否外链" rules={[{ required: true }]} key="isFrame">
-          <Radio.Group options={isLinkOptions} />
-        </Form.Item>,
-        <Form.Item name="path" label="路由地址" rules={[{ required: true }]} key="path">
-          <Input placeholder="请输入路由地址" />
-        </Form.Item>
-      ]}
-
-      {values.menuType !== 0 && (
-        <Form.Item name="perms" label="权限Code" rules={[{ required: true }]}>
-          <Input placeholder="请输入权限Code" />
-        </Form.Item>
-      )}
-
-      <Form.Item name="status" label="菜单状态" rules={[{ required: true }]}>
+      <Form.Item name="userName" label="用户名称" rules={[{ required: true }]}>
+        <Input placeholder="请输入" />
+      </Form.Item>
+      <Form.Item name="password" label="用户密码" rules={[{ required: true }]}>
+        <Input.Password placeholder="请输入" />
+      </Form.Item>
+      <Form.Item name="sex" label="用户性别" rules={[{ required: true }]}>
+        <Radio.Group options={sexOptions} />
+      </Form.Item>
+      {/* <Form.Item name="menuName" label="角色" rules={[{ required: true }]}>
+        <Input placeholder="请输入" />
+      </Form.Item> */}
+      <Form.Item name="status" label="状态" rules={[{ required: true }]}>
         <Radio.Group options={statusOptions} />
+      </Form.Item>
+      <Form.Item name="remark" label="备注">
+        <Input placeholder="请输入" />
       </Form.Item>
     </Form>
   );
