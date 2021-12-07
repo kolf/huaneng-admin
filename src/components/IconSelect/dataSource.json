@@ -1,0 +1,478 @@
+{
+  "id": "2990028",
+  "name": "huaneng",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "中国华能",
+  "glyphs": [
+    {
+      "icon_id": "20351352",
+      "name": "销售记录",
+      "font_class": "xiaoshoujilu",
+      "unicode": "e9bd",
+      "unicode_decimal": 59837
+    },
+    {
+      "icon_id": "20351354",
+      "name": "病虫情报",
+      "font_class": "bingchongqingbao",
+      "unicode": "e9be",
+      "unicode_decimal": 59838
+    },
+    {
+      "icon_id": "20351355",
+      "name": "虫情反馈",
+      "font_class": "chongqingfankui",
+      "unicode": "e9bf",
+      "unicode_decimal": 59839
+    },
+    {
+      "icon_id": "20351380",
+      "name": "种植品种管理",
+      "font_class": "zhongzhipinzhongguanli",
+      "unicode": "e9c1",
+      "unicode_decimal": 59841
+    },
+    {
+      "icon_id": "22612620",
+      "name": "农场管理",
+      "font_class": "nongchangguanli",
+      "unicode": "e9e5",
+      "unicode_decimal": 59877
+    },
+    {
+      "icon_id": "22612621",
+      "name": "工作平台",
+      "font_class": "gongzuopingtai",
+      "unicode": "e9e6",
+      "unicode_decimal": 59878
+    },
+    {
+      "icon_id": "22612622",
+      "name": "财务管理",
+      "font_class": "caiwuguanli",
+      "unicode": "e9e7",
+      "unicode_decimal": 59879
+    },
+    {
+      "icon_id": "22612623",
+      "name": "库存管理",
+      "font_class": "kucunguanli",
+      "unicode": "e9e8",
+      "unicode_decimal": 59880
+    },
+    {
+      "icon_id": "22612624",
+      "name": "生产统计分析",
+      "font_class": "shengchantongjifenxi",
+      "unicode": "e9e9",
+      "unicode_decimal": 59881
+    },
+    {
+      "icon_id": "22612625",
+      "name": "生产管理",
+      "font_class": "shengchanguanli",
+      "unicode": "e9ea",
+      "unicode_decimal": 59882
+    },
+    {
+      "icon_id": "22612626",
+      "name": "环境管理",
+      "font_class": "huanjingguanli",
+      "unicode": "e9eb",
+      "unicode_decimal": 59883
+    },
+    {
+      "icon_id": "22612627",
+      "name": "采收管理",
+      "font_class": "caishouguanli",
+      "unicode": "e9ec",
+      "unicode_decimal": 59884
+    },
+    {
+      "icon_id": "22612628",
+      "name": "系统管理",
+      "font_class": "xitongguanli",
+      "unicode": "e9ed",
+      "unicode_decimal": 59885
+    },
+    {
+      "icon_id": "22612629",
+      "name": "出库管理",
+      "font_class": "chukuguanli",
+      "unicode": "e9ee",
+      "unicode_decimal": 59886
+    },
+    {
+      "icon_id": "22612630",
+      "name": "大棚管理",
+      "font_class": "dapengguanli",
+      "unicode": "e9ef",
+      "unicode_decimal": 59887
+    },
+    {
+      "icon_id": "22612631",
+      "name": "部门管理",
+      "font_class": "bumenguanli",
+      "unicode": "e9f0",
+      "unicode_decimal": 59888
+    },
+    {
+      "icon_id": "22612632",
+      "name": "大棚种苗管理",
+      "font_class": "dapengzhongmiaoguanli",
+      "unicode": "e9f1",
+      "unicode_decimal": 59889
+    },
+    {
+      "icon_id": "22612633",
+      "name": "采收登记",
+      "font_class": "caishoudengji",
+      "unicode": "e9f2",
+      "unicode_decimal": 59890
+    },
+    {
+      "icon_id": "22612634",
+      "name": "标准工序管理",
+      "font_class": "biaozhungongxuguanli",
+      "unicode": "e9f3",
+      "unicode_decimal": 59891
+    },
+    {
+      "icon_id": "22612635",
+      "name": "库存展示",
+      "font_class": "kucunzhanshi",
+      "unicode": "e9f4",
+      "unicode_decimal": 59892
+    },
+    {
+      "icon_id": "22612636",
+      "name": "仓库管理",
+      "font_class": "cangkuguanli",
+      "unicode": "e9f5",
+      "unicode_decimal": 59893
+    },
+    {
+      "icon_id": "22612637",
+      "name": "人员工资计算",
+      "font_class": "renyuangongzijisuan",
+      "unicode": "e9f6",
+      "unicode_decimal": 59894
+    },
+    {
+      "icon_id": "22612638",
+      "name": "环境数据",
+      "font_class": "huanjingshuju",
+      "unicode": "e9f7",
+      "unicode_decimal": 59895
+    },
+    {
+      "icon_id": "22612639",
+      "name": "农残检测",
+      "font_class": "nongcanjiance",
+      "unicode": "e9f8",
+      "unicode_decimal": 59896
+    },
+    {
+      "icon_id": "22612640",
+      "name": "分拣登记",
+      "font_class": "fenjiandengji",
+      "unicode": "e9f9",
+      "unicode_decimal": 59897
+    },
+    {
+      "icon_id": "22612641",
+      "name": "葡萄园管理",
+      "font_class": "putaoyuanguanli",
+      "unicode": "e9fa",
+      "unicode_decimal": 59898
+    },
+    {
+      "icon_id": "22612642",
+      "name": "角色管理",
+      "font_class": "jiaoseguanli",
+      "unicode": "e9fb",
+      "unicode_decimal": 59899
+    },
+    {
+      "icon_id": "22612643",
+      "name": "任务评分管理",
+      "font_class": "renwupingfenguanli",
+      "unicode": "e9fc",
+      "unicode_decimal": 59900
+    },
+    {
+      "icon_id": "22612644",
+      "name": "环境预警配置",
+      "font_class": "huanjingyujingpeizhi",
+      "unicode": "e9fd",
+      "unicode_decimal": 59901
+    },
+    {
+      "icon_id": "22612645",
+      "name": "生产计划设定",
+      "font_class": "shengchanjihuasheding",
+      "unicode": "e9fe",
+      "unicode_decimal": 59902
+    },
+    {
+      "icon_id": "22612646",
+      "name": "设备管理",
+      "font_class": "shebeiguanli",
+      "unicode": "e9ff",
+      "unicode_decimal": 59903
+    },
+    {
+      "icon_id": "22612647",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "ea00",
+      "unicode_decimal": 59904
+    },
+    {
+      "icon_id": "22612648",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "ea01",
+      "unicode_decimal": 59905
+    },
+    {
+      "icon_id": "22612649",
+      "name": "生产日志管理",
+      "font_class": "shengchanrizhiguanli",
+      "unicode": "ea02",
+      "unicode_decimal": 59906
+    },
+    {
+      "icon_id": "22612650",
+      "name": "展示平台",
+      "font_class": "zhanshipingtai",
+      "unicode": "ea03",
+      "unicode_decimal": 59907
+    },
+    {
+      "icon_id": "22612651",
+      "name": "库存预警配置",
+      "font_class": "kucunyujingpeizhi",
+      "unicode": "ea04",
+      "unicode_decimal": 59908
+    },
+    {
+      "icon_id": "22612652",
+      "name": "临时任务设定",
+      "font_class": "linshirenwusheding",
+      "unicode": "ea05",
+      "unicode_decimal": 59909
+    },
+    {
+      "icon_id": "22612653",
+      "name": "入库管理",
+      "font_class": "rukuguanli",
+      "unicode": "ea06",
+      "unicode_decimal": 59910
+    },
+    {
+      "icon_id": "22612654",
+      "name": "种植品种管理",
+      "font_class": "zhongzhipinzhongguanli1",
+      "unicode": "ea07",
+      "unicode_decimal": 59911
+    },
+    {
+      "icon_id": "22612655",
+      "name": "支出分析",
+      "font_class": "zhichufenxi",
+      "unicode": "ea08",
+      "unicode_decimal": 59912
+    },
+    {
+      "icon_id": "22612656",
+      "name": "人员工时展示",
+      "font_class": "renyuangongshizhanshi",
+      "unicode": "ea09",
+      "unicode_decimal": 59913
+    },
+    {
+      "icon_id": "22612657",
+      "name": "人员管理",
+      "font_class": "renyuanguanli",
+      "unicode": "ea0a",
+      "unicode_decimal": 59914
+    },
+    {
+      "icon_id": "22612658",
+      "name": "日志查询",
+      "font_class": "rizhichaxun",
+      "unicode": "ea0b",
+      "unicode_decimal": 59915
+    },
+    {
+      "icon_id": "22612659",
+      "name": "生产计划类型",
+      "font_class": "shengchanjihualeixing",
+      "unicode": "ea0c",
+      "unicode_decimal": 59916
+    },
+    {
+      "icon_id": "22612660",
+      "name": "种苗来源管理",
+      "font_class": "zhongmiaolaiyuanguanli",
+      "unicode": "ea0d",
+      "unicode_decimal": 59917
+    },
+    {
+      "icon_id": "22914351",
+      "name": "物资管理",
+      "font_class": "wuziguanli",
+      "unicode": "ea0e",
+      "unicode_decimal": 59918
+    },
+    {
+      "icon_id": "22942742",
+      "name": "采收编号",
+      "font_class": "caishoubianhao",
+      "unicode": "ea0f",
+      "unicode_decimal": 59919
+    },
+    {
+      "icon_id": "22942743",
+      "name": "采收重量",
+      "font_class": "caishouzhongliang",
+      "unicode": "ea10",
+      "unicode_decimal": 59920
+    },
+    {
+      "icon_id": "22942744",
+      "name": "大棚名称",
+      "font_class": "dapengmingcheng",
+      "unicode": "ea11",
+      "unicode_decimal": 59921
+    },
+    {
+      "icon_id": "22942745",
+      "name": "登记日期",
+      "font_class": "dengjiriqi",
+      "unicode": "ea12",
+      "unicode_decimal": 59922
+    },
+    {
+      "icon_id": "22942746",
+      "name": "批次名称",
+      "font_class": "picimingcheng",
+      "unicode": "ea13",
+      "unicode_decimal": 59923
+    },
+    {
+      "icon_id": "22942747",
+      "name": "品种名称",
+      "font_class": "pinzhongmingcheng",
+      "unicode": "ea14",
+      "unicode_decimal": 59924
+    },
+    {
+      "icon_id": "23060485",
+      "name": "盘点单",
+      "font_class": "pandiandan",
+      "unicode": "ea15",
+      "unicode_decimal": 59925
+    },
+    {
+      "icon_id": "23060486",
+      "name": "耗材",
+      "font_class": "haocai",
+      "unicode": "ea16",
+      "unicode_decimal": 59926
+    },
+    {
+      "icon_id": "23060487",
+      "name": "商品",
+      "font_class": "shangpin",
+      "unicode": "ea17",
+      "unicode_decimal": 59927
+    },
+    {
+      "icon_id": "23060488",
+      "name": "设备",
+      "font_class": "shebei",
+      "unicode": "ea18",
+      "unicode_decimal": 59928
+    },
+    {
+      "icon_id": "23060489",
+      "name": "投入品",
+      "font_class": "tourupin",
+      "unicode": "ea19",
+      "unicode_decimal": 59929
+    },
+    {
+      "icon_id": "23060490",
+      "name": "出库单",
+      "font_class": "chukudan",
+      "unicode": "ea1a",
+      "unicode_decimal": 59930
+    },
+    {
+      "icon_id": "23060493",
+      "name": "入库单",
+      "font_class": "rukudan",
+      "unicode": "ea1b",
+      "unicode_decimal": 59931
+    },
+    {
+      "icon_id": "23195913",
+      "name": "生产日期",
+      "font_class": "shengchanriqi",
+      "unicode": "ea1c",
+      "unicode_decimal": 59932
+    },
+    {
+      "icon_id": "23195914",
+      "name": "出库日期",
+      "font_class": "chukuriqi",
+      "unicode": "ea1d",
+      "unicode_decimal": 59933
+    },
+    {
+      "icon_id": "23195915",
+      "name": "入库日期",
+      "font_class": "rukuriqi",
+      "unicode": "ea1e",
+      "unicode_decimal": 59934
+    },
+    {
+      "icon_id": "23195916",
+      "name": "到期日期",
+      "font_class": "daoqiriqi",
+      "unicode": "ea1f",
+      "unicode_decimal": 59935
+    },
+    {
+      "icon_id": "23195917",
+      "name": "所属仓库",
+      "font_class": "suoshucangku",
+      "unicode": "ea20",
+      "unicode_decimal": 59936
+    },
+    {
+      "icon_id": "23195918",
+      "name": "物资名称",
+      "font_class": "wuzimingcheng",
+      "unicode": "ea21",
+      "unicode_decimal": 59937
+    },
+    {
+      "icon_id": "23234304",
+      "name": "考核人",
+      "font_class": "kaoheren",
+      "unicode": "ea22",
+      "unicode_decimal": 59938
+    },
+    {
+      "icon_id": "23234305",
+      "name": "考核年月",
+      "font_class": "kaohenianyue",
+      "unicode": "ea23",
+      "unicode_decimal": 59939
+    }
+  ]
+}

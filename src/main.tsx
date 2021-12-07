@@ -4,7 +4,7 @@ import { RecoilRoot } from 'recoil';
 import axios, { AxiosContext } from './api/request';
 
 import App from './App';
-import SuspendFallbackLoading from './layout/SuspendFallbackLoading';
+import Loading from './components/loading';
 
 const AxiosProvider = ({ children }: React.PropsWithChildren<unknown>) => {
   const axiosValue = useMemo(() => {
@@ -18,7 +18,7 @@ ReactDOM.render(
   // <React.StrictMode>
   <AxiosProvider>
     <RecoilRoot>
-      <Suspense fallback={<SuspendFallbackLoading />}>
+      <Suspense fallback={<Loading />}>
         <App />
       </Suspense>
     </RecoilRoot>

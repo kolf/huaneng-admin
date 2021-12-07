@@ -32,6 +32,11 @@ interface ProTableProps {
   toolBarRender?: () => React.ReactElement;
 }
 
+const layout = {
+  labelCol: { span: 5 },
+  wrapperCol: { span: 19 }
+};
+
 const ProTable: React.FC<ProTableProps> = ({
   headerTitle,
   columns,
@@ -52,7 +57,7 @@ const ProTable: React.FC<ProTableProps> = ({
       .filter((f, index) => index < count)
       .map(col => (
         <Col span={8} key={col.dataIndex}>
-          <Form.Item name={col.dataIndex} label={col.title} {...col.formItemProps}>
+          <Form.Item name={col.dataIndex} label={col.title} {...layout} {...col.formItemProps}>
             <Input placeholder="请输入" />
           </Form.Item>
         </Col>

@@ -8,7 +8,7 @@ import UpdateForm from './components/UpdateForm';
 import modal from '@/utils/modal';
 import arrayToTree from '@/utils/arrayToTree';
 
-const mekeData = (data: any[]) => {
+const makeData = data => {
   if (!data) {
     return [];
   }
@@ -16,15 +16,22 @@ const mekeData = (data: any[]) => {
 };
 
 const Menus = () => {
-  const [params, setParams] = useState<MenuParams>({
-    // menuType: 1,
-    // orderNum: 1,
-    // menuName: '1'
-  });
+  const [params, setParams] = useState<MenuParams>({});
   const { data, error, loading, refresh } = useGetMenus(params);
 
-  const onAdd = useCallback(id => {
-    console.log(id);
+  const onAdd = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '添加菜单',
+      width: 640,
+      content: <UpdateForm saveRef={r => (formRef = r)} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      console.log(formRef, 'form');
+    }
   }, []);
 
   const onDelete = useCallback(data => {
@@ -44,17 +51,17 @@ const Menus = () => {
     }
   }, []);
 
-  const onUpdate = useCallback(id => {
+  const onUpdate = useCallback(records => {
     let formRef = null;
     const mod = modal({
       title: '修改菜单',
-      width: 680,
-      content: <UpdateForm saveRef={r => (formRef = r)} />,
+      width: 640,
+      content: <UpdateForm saveRef={r => (formRef = r)} initialValues={records} />,
       onOk
     });
 
     async function onOk() {
-      const values = await formRef.validateFields()
+      const values = await formRef.validateFields();
       console.log(formRef, 'form');
     }
   }, []);
@@ -68,13 +75,14 @@ const Menus = () => {
     { title: '菜单名称', dataIndex: 'menuName', valueType: 'input', width: 200 },
     { title: '图标', dataIndex: 'icon' },
     { title: '排序', dataIndex: 'orderNum' },
-    { title: '权限标识', dataIndex: 'perms', valueType: 'input' },
-    { title: '路径', dataIndex: 'path', valueType: 'input' },
+    { title: '权限标识', dataIndex: 'perms' },
+    { title: '路径', dataIndex: 'path' },
     { title: '状态', dataIndex: 'status', valueType: 'input' },
-    { title: '创建时间', dataIndex: 'createTime', valueType: 'input' },
+    { title: '创建时间', dataIndex: 'createTime' },
     {
       title: '操作',
       dataIndex: 'menuId',
+      width: 160,
       render(text, records) {
         return (
           <Space>
@@ -105,7 +113,7 @@ const Menus = () => {
         rowKey="menuId"
         columns={columns}
         loading={loading}
-        dataSource={mekeData(data?.data)}
+        dataSource={makeData(data?.data)}
         search={{
           collapsed: false,
           onFinish: handleSearch

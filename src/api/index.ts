@@ -15,9 +15,9 @@ export const getCurrentMenus = () => {
   return request.get(`/api/v1/sysMenu/currentUserMenu`);
 };
 
-export const useGetMenus = (params: MenuParams) => {
-  return useRequest<Result<MenuResult[]>>(() => request.post(`/api/v1/sysMenu/list`, params), {
-    refreshDeps: [params]
+export const useGetMenus = (params?: MenuParams) => {
+  return useRequest<Result<MenuResult[]>>(() => request.post(`/api/v1/sysMenu/list`, params || {}), {
+    refreshDeps: params ? [params] : []
   });
 };
 
@@ -25,7 +25,7 @@ export const useUpdateMenu = () => {
   return useRequest<Result<MenuResult>>(params => request.post(`/api/v1/sysMenu`, params));
 };
 
-export const deleteMenu = (id:number) => {
+export const deleteMenu = (id: number) => {
   return request.delete<Result<any>>(`/api/v1/sysMenu/${id}`);
 };
 

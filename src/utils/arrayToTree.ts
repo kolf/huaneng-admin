@@ -20,7 +20,7 @@ export default function arrayToTree<T>(list: T[], { id, parentId }: { id: string
 
   for (const item of treeList) {
     node = item as TTree<T> & { [parentId: string]: number };
-    if (node[parentId] !== 0) {
+    if (treeList.find(t => t[id] === item[parentId])) {
       const item = treeList[map[node[parentId]]];
       if (item) {
         if (item.children) {
