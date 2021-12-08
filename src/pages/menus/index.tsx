@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetMenus, deleteMenu, updateMenu, addMenu } from '@/api';
+import {deleteMenu, updateMenu, addMenu, getMenus } from '@/api';
 import { MenuParams } from '@/models/menu';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ import modal from '@/utils/modal';
 import arrayToTree from '@/utils/arrayToTree';
 
 import { statusOptions } from '@/utils/options';
+import useRequest from '@ahooksjs/use-request';
 
 const makeData = data => {
   if (!data) {
@@ -28,7 +29,7 @@ const defaultValues = {
 
 const Menus = () => {
   const [params, setParams] = useState<MenuParams>({});
-  const { data, error, loading } = useGetMenus(params);
+  const { data, error, loading } = useRequest(() => getMenus(params), { refreshDeps: [params] });
 
   const onAdd = useCallback(records => {
     let formRef = null;

@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetRoles, deleteRole, updateRole, addRole } from '@/api';
+import { deleteRole, updateRole, addRole, getRoles, setRoleUsers } from '@/api';
 import { RoleParams } from '@/models/role';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateForm from './components/UpdateForm';
+import UpdateUsers from './components/UpdateUsers';
 import { statusOptions } from '@/utils/options';
 
 import modal from '@/utils/modal';
+import useRequest from '@ahooksjs/use-request';
 
 const makeData = data => {
   if (!data) {
@@ -23,8 +25,11 @@ const defaultValues = {
 };
 
 const Roles = () => {
-  const [params, setParams] = useState<RoleParams>({});
-  const { data, error, loading } = useGetRoles(params);
+  const [params, setParams] = useState<RoleParams>({ pageSize: 10 });
+  const { data, error, loading } = useRequest(() => getRoles(params), {
+    refreshDeps: [params],
+    formatResult: res => res.data
+  });
 
   const onAdd = useCallback(records => {
     let formRef = null;
@@ -101,6 +106,34 @@ const Roles = () => {
     }
   }, []);
 
+  const setUsers = useCallback(async records => {
+    let formRef = null;
+    const mod = modal({
+      title: '分配用户',
+      content: <UpdateUsers saveRef={r => (formRef = r)} id={records.roleId} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await setRoleUsers({
+          roleId: records.roleId,
+          ...values
+        });
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`设置成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
+
   const handleSearch = values => {
     setParams({ ...params, ...values });
   };
@@ -108,7 +141,20 @@ const Roles = () => {
   const columns = [
     { title: '角色名称', dataIndex: 'roleName', valueType: 'input' },
     { title: '备注', dataIndex: 'remark' },
-    { title: '状态', dataIndex: 'status', valueType: 'searchSelect', options: statusOptions },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      valueType: 'searchSelect',
+      options: statusOptions,
+      render(text) {
+        if (text === 0) {
+          return <Tag color="success">正常</Tag>;
+        }
+        if (text === 1) {
+          return <Tag color="error">停用</Tag>;
+        }
+      }
+    },
     { title: '创建时间', dataIndex: 'createTime', valueType: 'dateRange' },
     {
       title: '操作',
@@ -124,6 +170,10 @@ const Roles = () => {
             <a onClick={onDelete.bind(this, records)}>
               <DeleteOutlined />
               删除
+            </a>
+            <a onClick={setUsers.bind(this, records)}>
+              <AuditOutlined />
+              分配用户
             </a>
           </Space>
         );

@@ -1,63 +1,21 @@
 import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'antd';
-import IconSelect from '@/components/IconSelect';
 import Loading from '@/components/Loading';
-import { useGetMenus } from '@/api';
-import arrayToTree from '@/utils/arrayToTree';
+import { getMenus } from '@/api';
 import { statusOptions, sexOptions } from '@/utils/options';
-const { TreeNode } = TreeSelect;
+import useRequest from '@ahooksjs/use-request';
 const layout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 17 }
 };
-
-const menuTypeOptions: OptionProps<number>[] = [
-  {
-    value: 0,
-    label: '目录'
-  },
-  {
-    value: 1,
-    label: '菜单'
-  },
-  {
-    value: 2,
-    label: '按钮'
-  }
-];
-
-const isLinkOptions: OptionProps<number>[] = [
-  {
-    value: 1,
-    label: '是'
-  },
-  {
-    value: 0,
-    label: '否'
-  }
-];
-
 interface Props {
   saveRef: any;
   initialValues?: any;
 }
 
-const renderTreeNodeList = dataSource => {
-  const loop = data => {
-    return data
-      .filter(item => item)
-      .map(item => (
-        <TreeNode key={item.menuId} value={item.menuId} title={item.menuName}>
-          {item.children && loop(item.children)}
-        </TreeNode>
-      ));
-  };
-  return loop(dataSource);
-};
-
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
-  const { data, loading } = useGetMenus();
+  const { data, loading } = useRequest(() => getMenus({}));
   const [values, setValues] = React.useState(initialValues);
 
   React.useEffect(() => {
@@ -110,4 +68,4 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   );
 };
 
-export default UpdateForm;
+export default React.memo(UpdateForm);

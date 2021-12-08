@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetUsers, deleteUser, updateUser, addUser } from '@/api';
-import { UserParams } from '@/models/me';
+import { deleteUser, updateUser, addUser, getUser, getUsers } from '@/api';
+import { UserParams } from '@/models/user';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
 import CheckboxGroup from '@/components/CheckboxGroup';
@@ -10,6 +10,7 @@ import UpdateRoles from './components/UpdateRoles';
 
 import modal from '@/utils/modal';
 import { statusOptions, sexEnum } from '@/utils/options';
+import useRequest from '@ahooksjs/use-request';
 
 const makeData = data => {
   if (!data) {
@@ -27,7 +28,10 @@ const defaultValues = {
 
 const Users = () => {
   const [params, setParams] = useState<UserParams>({});
-  const { data, error, loading } = useGetUsers(params);
+  const { data, error, loading } = useRequest(() => getUsers(params), {
+    refreshDeps: [params],
+    formatResult: res => res.data
+  });
 
   const onAdd = useCallback(records => {
     let formRef = null;
@@ -104,11 +108,13 @@ const Users = () => {
     }
   }, []);
 
-  const setRoles = useCallback(records => {
+  const setRoles = useCallback(async records => {
+    console.log(records.userId);
+
     let formRef = null;
     const mod = modal({
-      title: '设置权限',
-      content: <UpdateRoles defaultValue={[]} />,
+      title: '分配角色',
+      content: <UpdateRoles saveRef={r => (formRef = r)} id={records.userId} />,
       onOk
     });
 
@@ -116,7 +122,7 @@ const Users = () => {
       const values = await formRef.validateFields();
       mod.confirmLoading();
       try {
-        const res = await updateUser({ ...values, userId: records.userId });
+        const res = await updateUser({ ...records, ...values });
         if (res.code !== 200) {
           throw new Error(res.message);
         }

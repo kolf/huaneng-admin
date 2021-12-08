@@ -5,29 +5,35 @@ import { LoginParams } from '@/models/login';
 import { useRecoilState } from 'recoil';
 import { userState } from '@/stores/user';
 import { Location } from 'history';
-import { useGetVcode, useLogin } from '@/api';
+import { getUserVcode, login } from '@/api';
 
 import styles from './index.module.less';
 import { ReactComponent as LogoSvg } from '@/assets/logo.svg';
+import useRequest from '@ahooksjs/use-request';
 
 const LoginForm: FC = () => {
-  const loginMutation = useLogin();
-  const { data: vcode, run: getVcode } = useGetVcode();
+  const [form] = Form.useForm();
+  const { data: vcode, run: getVcode } = useRequest(getUserVcode, { formatResult: res => res.data });
+  const loginFn = useRequest(login, { manual: true });
   const [user, setUser] = useRecoilState(userState);
   const location = useLocation() as Location<{ from: string }>;
   const navigate = useNavigate();
 
   useEffect(() => {
     logout();
+
+    if (localStorage.getItem('remember') === '1') {
+      form.setFieldsValue({ username: 1, remember: true });
+    }
   }, []);
 
   const logout = () => {
     setUser({ ...user, logged: false });
-    localStorage.clear();
+    localStorage.removeItem('token');
   };
 
   const onFinished = async (values: LoginParams) => {
-    const res = await loginMutation.run({
+    const res = await loginFn.run({
       ...values,
       uuid: vcode?.uuid as string
     });
@@ -39,6 +45,7 @@ const LoginForm: FC = () => {
     const { token, sysUser } = res.data;
     setUser({ ...user, logged: true, username: sysUser.userName });
     localStorage.setItem('token', token);
+    localStorage.setItem('remember', values.remember ? '1' : '0');
     localStorage.setItem('username', sysUser.userName);
     const from = location.state?.from || { pathname: '/dashboard' };
     navigate(from);
@@ -54,7 +61,7 @@ const LoginForm: FC = () => {
           </div>
           <div className={styles.desc}>华能智能调运管理后台</div>
         </div>
-        <Form<LoginParams> onFinish={onFinished}>
+        <Form<LoginParams> onFinish={onFinished} form={form}>
           <Form.Item name="username" rules={[{ required: true, message: '请输入用户名！' }]}>
             <Input size="large" placeholder="用户名" />
           </Form.Item>
@@ -75,8 +82,8 @@ const LoginForm: FC = () => {
 
           <Form.Item>
             <Button
+              loading={loginFn.loading}
               block
-              loading={loginMutation.loading}
               size="large"
               className={styles.mainLoginBtn}
               htmlType="submit"

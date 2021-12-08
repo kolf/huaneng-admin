@@ -3,9 +3,10 @@ import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'a
 import IconSelect from '@/components/IconSelect';
 import Loading from '@/components/Loading';
 import ProTreeSelect from '@/components/ProTreeSelect';
-import { useGetMenus } from '@/api';
+import { getMenus } from '@/api';
 import arrayToTree from '@/utils/arrayToTree';
 import { statusOptions } from '@/utils/options';
+import useRequest from '@ahooksjs/use-request';
 const { TreeNode } = TreeSelect;
 const layout = {
   labelCol: { span: 6 },
@@ -43,19 +44,6 @@ interface Props {
   initialValues?: any;
 }
 
-const renderTreeNodeList = dataSource => {
-  const loop = data => {
-    return data
-      .filter(item => item)
-      .map(item => (
-        <TreeNode key={item.menuId} value={item.menuId} title={item.menuName}>
-          {item.children && loop(item.children)}
-        </TreeNode>
-      ));
-  };
-  return loop(dataSource);
-};
-
 const makeData = data => {
   return [
     {
@@ -71,7 +59,7 @@ const makeData = data => {
 
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
-  const { data, loading } = useGetMenus();
+  const { data, loading } = useRequest(() => getMenus({}));
   const [values, setValues] = React.useState(initialValues);
 
   React.useEffect(() => {

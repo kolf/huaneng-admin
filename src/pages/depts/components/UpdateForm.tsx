@@ -1,8 +1,9 @@
 import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'antd';
 import Loading from '@/components/Loading';
-import { useGetDepts } from '@/api';
+import { getDepts } from '@/api';
 import ProTreeSelect from '@/components/ProTreeSelect';
+import useRequest from '@ahooksjs/use-request';
 import arrayToTree from '@/utils/arrayToTree';
 import { statusOptions } from '@/utils/options';
 const { TreeNode } = TreeSelect;
@@ -31,7 +32,7 @@ const makeData = data => {
 
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
-  const { data, loading } = useGetDepts();
+  const { data, error, loading } = useRequest(() => getDepts({}));
   const [values, setValues] = React.useState(initialValues);
 
   React.useEffect(() => {

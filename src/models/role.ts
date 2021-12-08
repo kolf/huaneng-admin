@@ -1,3 +1,5 @@
-export interface RoleParams { }
+export interface RoleParams {
+  pageSize: number
+}
 
 export interface RoleResult { }

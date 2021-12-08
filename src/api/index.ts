@@ -14,10 +14,8 @@ type Result<T> = {
 };
 
 // 菜单查询
-export const useGetMenus = (params?: MenuParams) => {
-  return useRequest<Result<MenuResult[]>>(() => request.post(`/api/v1/sysMenu/list`, params || {}), {
-    refreshDeps: params ? [params] : []
-  });
+export const getMenus = (params: UserParams) => {
+  return request.post<Result<UserResult[]>>(`/api/v1/sysMenu/list`, params)
 };
 
 export const updateMenu = (params: MenuParams) => {
@@ -32,10 +30,8 @@ export const deleteMenu = (id: number) => {
   return request.delete<Result<any>>(`/api/v1/sysMenu/${id}`);
 };
 // 部门查询
-export const useGetDepts = (params?: MenuParams) => {
-  return useRequest<Result<MenuResult[]>>(() => request.post(`/api/v1/sysDept/list`, params || {}), {
-    refreshDeps: params ? [params] : []
-  });
+export const getDepts = (params: UserParams) => {
+  return request.post<Result<UserResult[]>>(`/api/v1/sysDept/list`, params)
 };
 
 export const updateDept = (params: MenuParams) => {
@@ -50,12 +46,15 @@ export const deleteDept = (id: number) => {
   return request.delete<Result<any>>(`/api/v1/sysDept/${id}`);
 };
 // 角色查询
-export const useGetRoles = (params: RoleParams) => {
-  return useRequest<Result<RoleResult[]>>(() => request.post(`/api/v1/sysRole/list`, params), {
-    refreshDeps: [params],
-    formatResult: res => res.data
-  });
-};
+export const getRoles = (params: RoleParams) => {
+  return request.post(`/api/v1/sysRole/list`, params)
+}
+export const setRoleUsers = (params: { roleId: number, userIds: number[] }) => {
+  return request.put(`/api/v1/sysRole/authUser/selectAll`, params)
+}
+export const getRoleUsers = (params: RoleParams) => {
+  return request.post(`/api/v1/sysRole/authUser/allocatedList/${params.roleId}`)
+}
 
 export const updateRole = (params: RoleParams) => {
   return request.put<Result<any>>(`/api/v1/sysRole/`, params);
@@ -69,11 +68,12 @@ export const deleteRole = (id: number) => {
   return request.delete<Result<any>>(`/api/v1/sysRole/${id}`);
 };
 // 用户查询
-export const useGetUsers = (params: UserParams) => {
-  return useRequest<Result<MenuResult[]>>(() => request.post(`/api/v1/sysUser/list`, params), {
-    refreshDeps: [params],
-    formatResult: res => res.data
-  });
+export const getUsers = (params: UserParams) => {
+  return request.post<Result<UserResult[]>>(`/api/v1/sysUser/list`, params)
+};
+
+export const getUser = (params: UserParams) => {
+  return request.get<Result<UserResult>>(`/api/v1/sysUser/${params.userId}`)
 };
 
 export const updateUser = (params: UserParams) => {
@@ -89,12 +89,12 @@ export const deleteUser = (id: number) => {
 };
 
 // 登陆相关
-export const useGetVcode = () => {
-  return useRequest<Result<VcodeResult>>(() => request.get(`/auth/captchaImage`), { formatResult: res => res.data });
+export const getUserVcode = () => {
+  return request.get(`/auth/captchaImage`)
 };
 
-export const useLogin = () => {
-  return useRequest<Result<LoginResult>>(data => request.post(`/auth/login`, data), { manual: true });
+export const login = (params: LoginParams) => {
+  return request.post(`/auth/login`, params)
 };
 
 export const getCurrentMenus = () => {

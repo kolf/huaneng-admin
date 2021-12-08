@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetDepts, deleteDept, updateDept, addDept } from '@/api';
+import {  deleteDept, updateDept, addDept, getDepts } from '@/api';
 import { DeptParams } from '@/models/dept';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ import modal from '@/utils/modal';
 import arrayToTree from '@/utils/arrayToTree';
 
 import { statusOptions } from '@/utils/options';
+import useRequest from '@ahooksjs/use-request';
 
 const makeData = data => {
   if (!data) {
@@ -27,7 +28,7 @@ const defaultValues = {
 
 const Depts = () => {
   const [params, setParams] = useState<DeptParams>({});
-  const { data, error, loading } = useGetDepts(params);
+  const { data, error, loading } = useRequest(() => getDepts(params), { refreshDeps: [params] });
 
   const onAdd = useCallback(records => {
     let formRef = null;
