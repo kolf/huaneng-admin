@@ -2,6 +2,7 @@ import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'antd';
 import IconSelect from '@/components/IconSelect';
 import Loading from '@/components/Loading';
+import ProTreeSelect from '@/components/ProTreeSelect';
 import { useGetMenus } from '@/api';
 import arrayToTree from '@/utils/arrayToTree';
 import { statusOptions } from '@/utils/options';
@@ -55,6 +56,19 @@ const renderTreeNodeList = dataSource => {
   return loop(dataSource);
 };
 
+const makeData = data => {
+  return [
+    {
+      value: 0,
+      label: '根目录',
+      children: arrayToTree(
+        data.map(item => ({ parentId: item.parentId, value: item.menuId, label: item.menuName })),
+        { parentId: 'parentId', id: 'value' }
+      )
+    }
+  ];
+};
+
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
   const { data, loading } = useGetMenus();
@@ -77,11 +91,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       onValuesChange={newValue => setValues({ ...values, ...newValue })}
     >
       <Form.Item name="parentId" label="上级菜单" rules={[{ required: true }]}>
-        <TreeSelect>
-          <TreeNode key={0} value={0} title="根目录">
-            {data?.data && renderTreeNodeList(arrayToTree(data.data, { parentId: 'parentId', id: 'menuId' }))}
-          </TreeNode>
-        </TreeSelect>
+        <ProTreeSelect dataSource={makeData(data?.data)} />
       </Form.Item>
 
       <Form.Item name="menuType" label="菜单类型" rules={[{ required: true }]}>

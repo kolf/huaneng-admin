@@ -1,12 +1,12 @@
 import React, { useEffect, FC } from 'react';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
-import { HomeOutlined } from '@ant-design/icons';
 import RightContent from './components/RightContent';
 import { userState } from '@/stores/user';
 import { useRecoilState } from 'recoil';
 import { getCurrentMenus } from '@/api';
 import arrayToTree from '@/utils/arrayToTree';
+import logoUrl from '@/assets/logo.png';
 
 const makeData = (data: any) => {
   if (!data) {
@@ -17,6 +17,7 @@ const makeData = (data: any) => {
       id: item.menuId,
       parentId: item.parentId,
       name: item.menuName,
+      icon: item.icon ? 'icon-' + item.icon : '',
       path: item.path
     })),
     { id: 'id', parentId: 'parentId' }
@@ -42,8 +43,9 @@ const Layout: FC = () => {
     <ProLayout
       fixSiderbar
       fixedHeader
+      logo={logoUrl}
       title="中国华能"
-      iconfontUrl='//at.alicdn.com/t/font_2990028_zmtyfvj6ftp.js'
+      iconfontUrl="//at.alicdn.com/t/font_2990028_zmtyfvj6ftp.js"
       menu={{
         request: async () => {
           const res = await getCurrentMenus();

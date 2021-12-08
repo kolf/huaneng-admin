@@ -1,7 +1,8 @@
 import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'antd';
 import Loading from '@/components/Loading';
-import { useGetMenus } from '@/api';
+import { useGetDepts } from '@/api';
+import ProTreeSelect from '@/components/ProTreeSelect';
 import arrayToTree from '@/utils/arrayToTree';
 import { statusOptions } from '@/utils/options';
 const { TreeNode } = TreeSelect;
@@ -15,22 +16,22 @@ interface Props {
   initialValues?: any;
 }
 
-const renderTreeNodeList = dataSource => {
-  const loop = data => {
-    return data
-      .filter(item => item)
-      .map(item => (
-        <TreeNode key={item.menuId} value={item.menuId} title={item.menuName}>
-          {item.children && loop(item.children)}
-        </TreeNode>
-      ));
-  };
-  return loop(dataSource);
+const makeData = data => {
+  return [
+    {
+      value: 0,
+      label: '集团总部',
+      children: arrayToTree(
+        data.map(item => ({ parentId: item.parentId, value: item.deptId, label: item.deptName })),
+        { parentId: 'parentId', id: 'value' }
+      )
+    }
+  ];
 };
 
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
-  const { data, loading } = useGetMenus();
+  const { data, loading } = useGetDepts();
   const [values, setValues] = React.useState(initialValues);
 
   React.useEffect(() => {
@@ -50,11 +51,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       onValuesChange={newValue => setValues({ ...values, ...newValue })}
     >
       <Form.Item name="parentId" label="上级部门" rules={[{ required: true }]}>
-        <TreeSelect>
-          <TreeNode key={0} value={0} title="根目录">
-            {data?.data && renderTreeNodeList(arrayToTree(data.data, { parentId: 'parentId', id: 'menuId' }))}
-          </TreeNode>
-        </TreeSelect>
+        <ProTreeSelect dataSource={makeData(data?.data)} />
       </Form.Item>
 
       <Form.Item name="deptName" label="部门名称" rules={[{ required: true }]}>

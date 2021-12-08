@@ -9,8 +9,6 @@ class Mod extends React.PureComponent {
   };
 
   state = {
-    disabled: true,
-    bounds: { left: 0, top: 0, bottom: 0, right: 0 },
     innerHeight: 600
   };
 
@@ -29,7 +27,6 @@ class Mod extends React.PureComponent {
           title={title}
           wrapClassName={wrapClassName + ' my-modal'}
           bodyStyle={{
-            ...otherProps.bodyStyle,
             maxHeight: this.state.innerHeight,
             overflowY: 'auto'
           }}

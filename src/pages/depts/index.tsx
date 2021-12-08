@@ -16,7 +16,7 @@ const makeData = data => {
   if (!data) {
     return [];
   }
-  return arrayToTree(data, { id: 'deptId', parentId: 'parentId' });
+  return arrayToTree(data, { parentId: 'parentId', id: 'deptId' });
 };
 
 const defaultValues = {
@@ -158,7 +158,7 @@ const Depts = () => {
         rowKey="deptId"
         columns={columns}
         loading={loading}
-        dataSource={makeData(data?.data)}
+        dataSource={loading ? [] : makeData(data?.data)}
         search={{
           collapsed: false,
           onFinish: handleSearch

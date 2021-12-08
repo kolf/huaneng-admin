@@ -56,7 +56,7 @@ const ProTable: React.FC<ProTableProps> = ({
   const [form] = Form.useForm();
   const fields = useMemo(() => columns?.filter(col => col.valueType), [columns]);
 
-  const getFields = useCallback(() => {
+  const renderFormItems = useCallback(() => {
     const count = expand ? fields.length : 5;
     return fields
       .filter((f, index) => index < count)
@@ -76,7 +76,7 @@ const ProTable: React.FC<ProTableProps> = ({
       case 'searchSelect':
         return <SearchSelect placeholder="请选择" {...restProps} />;
       case 'dateRange':
-        return <RangePicker />;
+        return <RangePicker style={{width:'100%'}}/>;
       default:
         break;
     }
@@ -92,18 +92,6 @@ const ProTable: React.FC<ProTableProps> = ({
     search.onFinish(propsValues);
   };
 
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
-    onSelectAll: (selected, selectedRows, changedRows) => {
-      console.log(selected, selectedRows, changedRows);
-    }
-  };
-
   const paginationProps = React.useMemo(() => {
     return {
       showQuickJumper: true,
@@ -114,15 +102,13 @@ const ProTable: React.FC<ProTableProps> = ({
     };
   }, [pagination]);
 
-  // console.log(dataSource, 'dataSource');
-
   return (
     <>
       <div className={styles.form}>
         <Form form={form} onFinish={onFinish} initialValues={initialValues}>
           <Row gutter={24}>
-            {getFields()}
-            <Col span={8} style={{ textAlign: 'right', paddingRight: 4 }}>
+            {renderFormItems()}
+            <Col span={8} push={(2 - (fields.length % 3))*8} style={{ textAlign: 'right', paddingRight: 4 }}>
               <div style={{ marginBottom: 24 }}>
                 {search.collapsed && (
                   <>

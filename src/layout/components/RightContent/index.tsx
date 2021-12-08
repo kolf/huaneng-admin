@@ -45,7 +45,7 @@ const RightContent: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown}>
       <span className={`${classes.action}`}>
-        <Avatar className={classes.avatar} src={avatar} alt="avatar" />
+        <Avatar src={avatar} alt="avatar" />
         <span className={`${classes.name}`}>{username}</span>
       </span>
     </HeaderDropdown>

@@ -4,7 +4,9 @@ import { useGetUsers, deleteUser, updateUser, addUser } from '@/api';
 import { UserParams } from '@/models/me';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
+import CheckboxGroup from '@/components/CheckboxGroup';
 import UpdateForm from './components/UpdateForm';
+import UpdateRoles from './components/UpdateRoles';
 
 import modal from '@/utils/modal';
 import { statusOptions, sexEnum } from '@/utils/options';
@@ -102,7 +104,30 @@ const Users = () => {
     }
   }, []);
 
-  const setRoles = () => {};
+  const setRoles = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '设置权限',
+      content: <UpdateRoles defaultValue={[]} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await updateUser({ ...values, userId: records.userId });
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`设置成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
 
   const handleSearch = values => {
     setParams({ ...params, ...values });
@@ -159,8 +184,6 @@ const Users = () => {
       }
     }
   ];
-
-  console.log(data, 'data');
 
   return (
     <>

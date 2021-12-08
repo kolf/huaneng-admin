@@ -1,43 +1,127 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { useGetRoles } from '@/api';
-import { MenuParams } from '@/models/menu';
-import { Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { useGetRoles, deleteRole, updateRole, addRole } from '@/api';
+import { RoleParams } from '@/models/role';
+import { Button, Space, Modal, Tag, message } from 'antd';
+import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
+import UpdateForm from './components/UpdateForm';
+import { statusOptions } from '@/utils/options';
 
-const Menus = () => {
-  const [params, setParams] = useState<MenuParams>({
-    // menuType: 1,
-    // orderNum: 1,
-    // menuName: '1'
-  });
-  const { data, error, loading, run } = useGetRoles(params);
+import modal from '@/utils/modal';
 
-  const onAdd = useCallback(id => {
-    console.log(id);
+const makeData = data => {
+  if (!data) {
+    return [];
+  }
+  return data;
+};
+
+const defaultValues = {
+  menuType: 0,
+  status: 0,
+  isFrame: 0
+};
+
+const Roles = () => {
+  const [params, setParams] = useState<RoleParams>({});
+  const { data, error, loading } = useGetRoles(params);
+
+  const onAdd = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '添加角色',
+      width: 640,
+      content: (
+        <UpdateForm saveRef={r => (formRef = r)} initialValues={{ ...defaultValues, parentId: records.roleId }} />
+      ),
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await addRole(values);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`添加成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
   }, []);
+
+  const onDelete = useCallback(data => {
+    Modal.confirm({
+      title: '系统提示',
+      content: `是否确认删除名称为${data.roleName}的数据项？`,
+      onOk
+    });
+
+    async function onOk() {
+      try {
+        const res = await deleteRole(data.roleId);
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`删除成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+    }
+  }, []);
+
+  const onUpdate = useCallback(records => {
+    let formRef = null;
+    const mod = modal({
+      title: '修改角色',
+      width: 640,
+      content: <UpdateForm saveRef={r => (formRef = r)} initialValues={records} />,
+      onOk
+    });
+
+    async function onOk() {
+      const values = await formRef.validateFields();
+      mod.confirmLoading();
+      try {
+        const res = await updateRole({ ...values, roleId: records.roleId });
+        if (res.code !== 200) {
+          throw new Error(res.message);
+        }
+        message.success(`修改成功！`);
+        handleSearch({});
+      } catch (error) {
+        message.error(error.message);
+      }
+      mod.close();
+    }
+  }, []);
+
+  const handleSearch = values => {
+    setParams({ ...params, ...values });
+  };
 
   const columns = [
     { title: '角色名称', dataIndex: 'roleName', valueType: 'input' },
-    { title: '角色code', dataIndex: 'icon' },
-    { title: '排序', dataIndex: 'orderNum' },
-    { title: '状态', dataIndex: 'status', valueType: 'input' },
-    { title: '创建时间', dataIndex: 'createTime' },
+    { title: '备注', dataIndex: 'remark' },
+    { title: '状态', dataIndex: 'status', valueType: 'searchSelect', options: statusOptions },
+    { title: '创建时间', dataIndex: 'createTime', valueType: 'dateRange' },
     {
       title: '操作',
-      dataIndex: 'oper',
-      render(records) {
+      dataIndex: 'roleId',
+      width: 190,
+      render(text, records) {
         return (
           <Space>
-            <a>
+            <a onClick={onUpdate.bind(this, records)}>
               <EditOutlined />
               修改
             </a>
-            <a onClick={onAdd.bind(this, records)}>
-              <PlusOutlined />
-              新增
-            </a>
-            <a>
+            <a onClick={onDelete.bind(this, records)}>
               <DeleteOutlined />
               删除
             </a>
@@ -47,27 +131,34 @@ const Menus = () => {
     }
   ];
 
-  const handleSearch = values => {
-    console.log(values, 'value');
-    setParams({ ...params, ...values });
-  };
-
-  console.log(data, 'data');
-
   return (
     <>
       <ProTable
         headerTitle="角色列表"
+        rowKey="roleId"
         columns={columns}
         loading={loading}
-        dataSource={data?.list}
+        dataSource={makeData(data?.list)}
+        pagination={{
+          total: data?.totalCount
+        }}
         search={{
           collapsed: false,
           onFinish: handleSearch
         }}
+        toolBarRender={() => [
+          <Space>
+            <Button type="primary" key="primary" onClick={() => onAdd({ roleId: 0 })}>
+              添加
+            </Button>
+            <Button icon={<ReloadOutlined />} onClick={() => handleSearch({})}>
+              刷新
+            </Button>
+          </Space>
+        ]}
       />
     </>
   );
 };
 
-export default Menus;
+export default Roles;

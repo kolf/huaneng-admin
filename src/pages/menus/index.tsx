@@ -161,8 +161,6 @@ const Menus = () => {
     }
   ];
 
-  console.log(data, 'data');
-
   return (
     <>
       <ProTable
@@ -170,7 +168,7 @@ const Menus = () => {
         rowKey="menuId"
         columns={columns}
         loading={loading}
-        dataSource={makeData(data?.data)}
+        dataSource={loading ? [] : makeData(data?.data)}
         search={{
           collapsed: false,
           onFinish: handleSearch

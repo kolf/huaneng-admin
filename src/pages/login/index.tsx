@@ -46,14 +46,14 @@ const LoginForm: FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.top}>
-        <div className={styles.header}>
-          {/* <LogoSvg className={styles.logo} /> */}
-          <span className={styles.title}>中国华能</span>
-        </div>
-        <div className={styles.desc}>智能调运管理后台</div>
-      </div>
       <div className={styles.main}>
+        <div className={styles.top}>
+          <div className={styles.header}>
+            <LogoSvg className={styles.logo} />
+            {/* <span className={styles.title}>中国华能</span> */}
+          </div>
+          <div className={styles.desc}>华能智能调运管理后台</div>
+        </div>
         <Form<LoginParams> onFinish={onFinished}>
           <Form.Item name="username" rules={[{ required: true, message: '请输入用户名！' }]}>
             <Input size="large" placeholder="用户名" />
