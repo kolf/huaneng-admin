@@ -12,12 +12,12 @@ import { useRoutes, RouteObject } from 'react-router-dom';
 // const Project = lazy(() => import('@/pages/project'));
 
 import NotFound from '@/pages/404';
-import Project from '@/pages/project';
-import Permission from '@/pages/permission';
 import Menus from '@/pages/menus';
 import Users from '@/pages/users';
 import Depts from '@/pages/depts';
 import Roles from '@/pages/roles';
+import SystemLogs from '@/pages/system-logs';
+import LoginLogs from '@/pages/login-logs';
 
 const routeList: RouteObject[] = [
   {
@@ -43,6 +43,14 @@ const routeList: RouteObject[] = [
       {
         path: '/system/dept',
         element: <PrivateRoute element={<Depts />} />
+      },
+      {
+        path: '/system/log',
+        element: <PrivateRoute element={<SystemLogs />} />
+      },
+      {
+        path: '/login/log',
+        element: <PrivateRoute element={<LoginLogs />} />
       },
       {
         path: '*',

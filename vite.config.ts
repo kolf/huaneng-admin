@@ -44,7 +44,7 @@ export default ({ command }: { command: string }) => {
           rewrite: (path: string) => path.replace(/^\/auth/, '')
         },
         '/api': {
-          target: 'http://47.93.241.1:8080',
+          target: 'http://47.93.241.1:8080/',
           changeOrigin: true,
         }
       },

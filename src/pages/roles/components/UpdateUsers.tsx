@@ -31,7 +31,11 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   const { data, loading, error } = useRequest(async () => {
     const res1 = await getRoleUsers({ roleId: id });
     const res2 = await getAllUsers({ pageSize: 10000 });
-    // initialValues = { roleIds: res1.data.roleIds };
+    initialValues = res1.data.list
+      ? {
+          userIds: res1.data.list.map(item => item.userId)
+        }
+      : {};
     return res2.data;
   });
 
@@ -46,6 +50,8 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   if (error) {
     return null;
   }
+
+  console.log(initialValues,'initialValues')
 
   return (
     <Form form={form} name="control-hooks" {...layout} initialValues={initialValues}>

@@ -76,7 +76,7 @@ const ProTable: React.FC<ProTableProps> = ({
       case 'searchSelect':
         return <SearchSelect placeholder="请选择" {...restProps} />;
       case 'dateRange':
-        return <RangePicker style={{width:'100%'}}/>;
+        return <RangePicker style={{ width: '100%' }} />;
       default:
         break;
     }
@@ -98,6 +98,7 @@ const ProTable: React.FC<ProTableProps> = ({
       showSizeChanger: true,
       size: 'small',
       style: { paddingTop: 24, textAlign: 'right' },
+      showTotal: () => `共 ${pagination.total} 条数据`,
       ...pagination
     };
   }, [pagination]);
@@ -108,7 +109,7 @@ const ProTable: React.FC<ProTableProps> = ({
         <Form form={form} onFinish={onFinish} initialValues={initialValues}>
           <Row gutter={24}>
             {renderFormItems()}
-            <Col span={8} push={(2 - (fields.length % 3))*8} style={{ textAlign: 'right', paddingRight: 4 }}>
+            <Col span={8} push={(2 - (fields.length % 3)) * 8} style={{ textAlign: 'right', paddingRight: 4 }}>
               <div style={{ marginBottom: 24 }}>
                 {search.collapsed && (
                   <>
