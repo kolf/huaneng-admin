@@ -4,10 +4,15 @@ import { Button, Space, Modal, Tag, message } from 'antd';
 import { ReloadOutlined } from '@ant-design/icons';
 
 import modal from '@/utils/modal';
-import { statusOptions } from '@/utils/options';
+import { logStatusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
 import { getLoginLogs } from '@/api/log.api';
 import { LogParams } from '@/models/log';
+
+const defaultData = {
+  list: [],
+  totalCount: 0
+};
 
 const makeData = data => {
   if (!data) {
@@ -16,12 +21,31 @@ const makeData = data => {
   return data;
 };
 
+const makeParams = params => {
+  return Object.entries(params).reduce((result, item) => {
+    const [key, value] = item;
+    if (/Time$/.test(key) && value) {
+      const [startTime, endTime] = value;
+      result.loginTimeStart = startTime.format('YYYY-MM-DD') + ' 00:00:00';
+      result.loginTimeEnd = endTime.format('YYYY-MM-DD') + ' 23:59:59';
+    } else if (value) {
+      result[key] = value;
+    }
+
+    return result;
+  }, {});
+};
+
 const SystemLogs = () => {
   const [params, setParams] = useState<LogParams>({
     pageNumber: 1,
     pageSize: 10
   });
-  const { data, error, loading } = useRequest(() => getLoginLogs(params), {
+  const {
+    data = defaultData,
+    error,
+    loading
+  } = useRequest(() => getLoginLogs(makeParams(params)), {
     refreshDeps: [params],
     formatResult: res => res.data
   });
@@ -40,7 +64,7 @@ const SystemLogs = () => {
       title: '状态',
       dataIndex: 'status',
       valueType: 'searchSelect',
-      options: statusOptions,
+      options: logStatusOptions,
       render(text) {
         if (text === 0) {
           return <Tag color="success">正常</Tag>;
@@ -61,7 +85,7 @@ const SystemLogs = () => {
     {
       title: '操作',
       dataIndex: 'userId',
-      width: 190,
+      width: 60,
       render(text, records) {
         return (
           <Space>

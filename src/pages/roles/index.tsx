@@ -120,7 +120,7 @@ const Roles = () => {
       try {
         const res = await setRoleUsers({
           roleId: records.roleId,
-          ...values
+          userIds: values.userIds.join(',')
         });
         if (res.code !== 200) {
           throw new Error(res.message);

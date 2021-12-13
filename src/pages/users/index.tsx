@@ -27,7 +27,10 @@ const defaultValues = {
 };
 
 const Users = () => {
-  const [params, setParams] = useState<UserParams>({});
+  const [params, setParams] = useState<UserParams>({
+    pageNumber: 1,
+    pageSize: 10
+  });
   const { data, error, loading } = useRequest(() => getUsers(params), {
     refreshDeps: [params],
     formatResult: res => res.data
@@ -165,7 +168,7 @@ const Users = () => {
         }
       }
     },
-    { title: '创建时间', dataIndex: 'createTime', valueType: 'dateRange' },
+    { title: '创建时间', dataIndex: 'createTime', _valueType: 'dateRange' },
     {
       title: '操作',
       dataIndex: 'userId',
@@ -200,7 +203,14 @@ const Users = () => {
         loading={loading}
         dataSource={makeData(data?.list)}
         pagination={{
-          total: data?.totalCount
+          total: data?.totalCount,
+          onChange(pageNum, pageSize) {
+            const pageNumber = pageSize !== params.pageSize ? 1 : pageNum;
+            setParams({
+              pageNumber,
+              pageSize
+            });
+          }
         }}
         search={{
           collapsed: false,

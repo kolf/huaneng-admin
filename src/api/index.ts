@@ -49,7 +49,7 @@ export const getRoles = (params: RoleParams) => {
   return request.post(`/api/v1/sysRole/list`, params);
 };
 export const setRoleUsers = (params: { roleId: number; userIds: number[] }) => {
-  return request.put(`/api/v1/sysRole/authUser/selectAll`, params);
+  return request.put(`/api/v1/sysRole/authUser/selectAll?${qs.stringify(params)}`);
 };
 export const getRoleUsers = (params: RoleParams) => {
   return request.post(`/api/v1/sysRole/authUser/allocatedList/${params.roleId}`, {});

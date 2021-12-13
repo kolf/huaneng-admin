@@ -51,7 +51,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
     return null;
   }
 
-  console.log(initialValues,'initialValues')
+  // console.log(initialValues,'initialValues')
 
   return (
     <Form form={form} name="control-hooks" {...layout} initialValues={initialValues}>
