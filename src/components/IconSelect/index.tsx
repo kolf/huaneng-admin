@@ -11,7 +11,7 @@ const iconList: OptionProps<string>[] = dataSource.glyphs.map(item => ({ value: 
 
 const IconSelect: React.FC<SelectProps<any>> = props => {
   return (
-    <Select {...props} dropdownClassName="icon-select" showSearch placeholder="请输入菜单名称">
+    <Select virtual={false} {...props} dropdownClassName="icon-select" showSearch placeholder="请输入菜单名称">
       {iconList.map(option => (
         <Option key={option.value} value={option.value} title={option.label}>
           <IconFont type={`icon-${option.value}`} />

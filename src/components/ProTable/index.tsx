@@ -41,6 +41,8 @@ const layout = {
   wrapperCol: { span: 19 }
 };
 
+const colSize = 8;
+
 const ProTable: React.FC<ProTableProps> = ({
   headerTitle,
   columns,
@@ -61,7 +63,7 @@ const ProTable: React.FC<ProTableProps> = ({
     return fields
       .filter((f, index) => index < count)
       .map(col => (
-        <Col span={8} key={col.dataIndex}>
+        <Col span={colSize} key={col.dataIndex}>
           <Form.Item name={col.dataIndex} label={col.title} {...layout} {...col.formItemProps}>
             {renderInput(col)}
           </Form.Item>
@@ -109,7 +111,11 @@ const ProTable: React.FC<ProTableProps> = ({
         <Form form={form} onFinish={onFinish} initialValues={initialValues}>
           <Row gutter={24}>
             {renderFormItems()}
-            <Col span={8} push={(2 - (fields.length % 3)) * 8} style={{ textAlign: 'right', paddingRight: 4 }}>
+            <Col
+              span={colSize}
+              push={(24 / colSize - 1 - (fields.length % (24 / colSize))) * colSize}
+              style={{ textAlign: 'right', paddingRight: 4 }}
+            >
               <div style={{ marginBottom: 24 }}>
                 {search.collapsed && (
                   <>

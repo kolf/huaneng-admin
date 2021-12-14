@@ -45,7 +45,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       <Form.Item name="roleName" label="角色名称" rules={[{ required: true }]}>
         <Input placeholder="请输入" />
       </Form.Item>
-      <Form.Item name="a133" label="菜单权限" rules={[{ required: true }]}>
+      <Form.Item name="menuIds" label="菜单权限" rules={[{ required: true }]}>
         <TreeCheckableSelect dataSource={[...makeData(data?.data)]} />
       </Form.Item>
       <Form.Item name="status" label="状态" rules={[{ required: true }]}>
