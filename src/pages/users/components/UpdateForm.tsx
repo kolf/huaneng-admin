@@ -1,8 +1,10 @@
 import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, InputNumber } from 'antd';
 import Loading from '@/components/Loading';
-import { getMenus } from '@/api';
+import ProTreeSelect from '@/components/ProTreeSelect';
+import { getDepts } from '@/api';
 import { statusOptions, sexOptions } from '@/utils/options';
+import arrayToTree from '@/utils/arrayToTree';
 import useRequest from '@ahooksjs/use-request';
 const layout = {
   labelCol: { span: 6 },
@@ -13,9 +15,16 @@ interface Props {
   initialValues?: any;
 }
 
+const makeData = data => {
+  return arrayToTree(
+    data.map(item => ({ parentId: item.parentId, value: item.deptId, label: item.deptName })),
+    { parentId: 'parentId', id: 'value' }
+  );
+};
+
 const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
   const [form] = Form.useForm();
-  const { data, loading } = useRequest(() => getMenus({}));
+  const { data, loading } = useRequest(() => getDepts({}));
   const [values, setValues] = React.useState(initialValues);
 
   React.useEffect(() => {
@@ -38,7 +47,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
         <Input placeholder="请输入" />
       </Form.Item>
       <Form.Item name="deptId" label="归属部门" rules={[{ required: true }]}>
-        <Input placeholder="请输入" />
+        <ProTreeSelect placeholder='请选择' dataSource={makeData(data?.data)} />
       </Form.Item>
       <Form.Item name="phone" label="手机号码" rules={[{ required: true }]}>
         <Input placeholder="请输入" />
