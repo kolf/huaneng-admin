@@ -1,6 +1,5 @@
 import React from 'react';
 import { TreeSelect } from 'antd';
-// import arrayToTree from '@/utils/arrayToTree';
 const { TreeNode } = TreeSelect;
 
 interface Props {

@@ -2,10 +2,10 @@ import React, { useEffect, FC } from 'react';
 import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import ProLayout, { PageContainer } from '@ant-design/pro-layout';
 import RightContent from './components/RightContent';
+import arrayToTree from 'array-to-tree';
 import { userState } from '@/stores/user';
 import { useRecoilState } from 'recoil';
 import { getCurrentMenus } from '@/api';
-import arrayToTree from '@/utils/arrayToTree';
 import logoUrl from '@/assets/logo.png';
 
 const makeData = (data: any) => {
@@ -20,7 +20,7 @@ const makeData = (data: any) => {
       icon: item.icon ? 'icon-' + item.icon : '',
       path: item.path
     })),
-    { id: 'id', parentId: 'parentId' }
+    { customID: 'id', parentProperty: 'parentId' }
   );
 };
 

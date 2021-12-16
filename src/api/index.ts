@@ -48,6 +48,9 @@ export const deleteDept = (id: number) => {
 export const getRoles = (params: RoleParams) => {
   return request.post(`/api/v1/sysRole/list`, params);
 };
+export const getRole = (params: RoleParams) => {
+  return request.get(`/api/v1/sysRole/${params.roleId}`);
+};
 export const setRoleUsers = (params: { roleId: number; userIds: number[] }) => {
   return request.put(`/api/v1/sysRole/authUser/selectAll?${qs.stringify(params)}`);
 };

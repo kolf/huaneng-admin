@@ -1,15 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import {  deleteDept, updateDept, addDept, getDepts } from '@/api';
+import { deleteDept, updateDept, addDept, getDepts } from '@/api';
 import { DeptParams } from '@/models/dept';
 import { Button, Space, Modal, Tag, message } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
-import IconFont from '@/components/IconFont';
+import { EditOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateForm from './components/UpdateForm';
 
 import modal from '@/utils/modal';
-import arrayToTree from '@/utils/arrayToTree';
 
+import arrayToTree from 'array-to-tree';
 import { statusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
 
@@ -17,7 +16,7 @@ const makeData = data => {
   if (!data) {
     return [];
   }
-  return arrayToTree(data, { parentId: 'parentId', id: 'deptId' });
+  return arrayToTree(data, { customID: 'deptId', parentProperty: 'parentId' });
 };
 
 const defaultValues = {

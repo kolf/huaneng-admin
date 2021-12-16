@@ -4756,11 +4756,6 @@ performance-now@^2.1.0:
   resolved "https://registry.nlark.com/performance-now/download/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-performant-array-to-tree@^1.9.1:
-  version "1.9.1"
-  resolved "https://registry.nlark.com/performant-array-to-tree/download/performant-array-to-tree-1.9.1.tgz#24897a56dedaa00c1f9c1a7e7ba92103008d1059"
-  integrity sha1-JIl6Vt7aoAwfnBp+e6khAwCNEFk=
-
 picocolors@^0.2.1:
   version "0.2.1"
   resolved "https://registry.npmmirror.com/picocolors/download/picocolors-0.2.1.tgz?cache=0&sync_timestamp=1634093378416&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Fpicocolors%2Fdownload%2Fpicocolors-0.2.1.tgz#570670f793646851d1ba135996962abad587859f"

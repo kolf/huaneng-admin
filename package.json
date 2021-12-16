@@ -21,7 +21,6 @@
     "driver.js": "^0.9.8",
     "history": "^5.0.0",
     "mockjs": "^1.1.0",
-    "performant-array-to-tree": "^1.9.1",
     "qs": "^6.9.6",
     "react": "^17.0.0",
     "react-app-polyfill": "^1.0.4",

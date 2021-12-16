@@ -4,8 +4,7 @@ import TreeCheckableSelect from '@/components/TreeCheckableSelect';
 import Loading from '@/components/Loading';
 import useRequest from '@ahooksjs/use-request';
 import { statusOptions } from '@/utils/options';
-import arrayToTree from '@/utils/arrayToTree';
-import { getMenus } from '@/api';
+import { getMenus, getRole } from '@/api';
 
 const layout = {
   labelCol: { span: 6 },
@@ -14,17 +13,18 @@ const layout = {
 
 interface Props {
   saveRef: any;
-  initialValues?: any;
+  id: number;
 }
 
 const makeData = data => {
   return data.map(item => ({ parentId: item.parentId, value: item.menuId, label: item.menuName }));
 };
 
-const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
+const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   const [form] = Form.useForm();
-  const { data, error, loading } = useRequest(() => getMenus({}));
-  const [values, setValues] = React.useState(initialValues);
+  const { data: menuData } = useRequest(() => getMenus({}));
+  const { data, loading } = useRequest(() => getRole({ roleId: id }), { ready: menuData });
+  const [values, setValues] = React.useState(data?.data);
 
   React.useEffect(() => {
     saveRef(form);
@@ -34,11 +34,13 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
     return <Loading />;
   }
 
+  console.log(data,menuData, 'data');
+
   return (
     <Form
       form={form}
       name="control-hooks"
-      initialValues={initialValues}
+      initialValues={data?.data}
       {...layout}
       onValuesChange={newValue => setValues({ ...values, ...newValue })}
     >
@@ -46,7 +48,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
         <Input placeholder="请输入" />
       </Form.Item>
       <Form.Item name="menuIds" label="菜单权限" rules={[{ required: true }]}>
-        <TreeCheckableSelect dataSource={[...makeData(data?.data)]} />
+        <TreeCheckableSelect dataSource={[...makeData(menuData?.data)]} />
       </Form.Item>
       <Form.Item name="status" label="状态" rules={[{ required: true }]}>
         <Radio.Group options={statusOptions} />

@@ -8,7 +8,7 @@ import IconFont from '@/components/IconFont';
 import UpdateForm from './components/UpdateForm';
 
 import modal from '@/utils/modal';
-import arrayToTree from '@/utils/arrayToTree';
+import arrayToTree from 'array-to-tree';
 
 import { statusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
@@ -17,7 +17,7 @@ const makeData = data => {
   if (!data) {
     return [];
   }
-  return arrayToTree(data, { id: 'menuId', parentId: 'parentId' });
+  return arrayToTree(data, { customID: 'menuId', parentProperty: 'parentId' });
 };
 
 const defaultValues = {

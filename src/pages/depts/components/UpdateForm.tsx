@@ -4,7 +4,7 @@ import Loading from '@/components/Loading';
 import { getDepts } from '@/api';
 import ProTreeSelect from '@/components/ProTreeSelect';
 import useRequest from '@ahooksjs/use-request';
-import arrayToTree from '@/utils/arrayToTree';
+import arrayToTree from 'array-to-tree';
 import { statusOptions } from '@/utils/options';
 const { TreeNode } = TreeSelect;
 const layout = {
@@ -24,7 +24,7 @@ const makeData = data => {
       label: '集团总部',
       children: arrayToTree(
         data.map(item => ({ parentId: item.parentId, value: item.deptId, label: item.deptName })),
-        { parentId: 'parentId', id: 'value' }
+        { parentProperty: 'parentId', customID: 'value' }
       )
     }
   ];

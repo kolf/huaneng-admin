@@ -4,7 +4,7 @@ import IconSelect from '@/components/IconSelect';
 import Loading from '@/components/Loading';
 import ProTreeSelect from '@/components/ProTreeSelect';
 import { getMenus } from '@/api';
-import arrayToTree from '@/utils/arrayToTree';
+import arrayToTree from 'array-to-tree';
 import { statusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
 const { TreeNode } = TreeSelect;
@@ -51,7 +51,7 @@ const makeData = data => {
       label: '根目录',
       children: arrayToTree(
         data.map(item => ({ parentId: item.parentId, value: item.menuId, label: item.menuName })),
-        { parentId: 'parentId', id: 'value' }
+        { parentProperty: 'parentId', customID: 'value' }
       )
     }
   ];

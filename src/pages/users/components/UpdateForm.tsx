@@ -4,7 +4,7 @@ import Loading from '@/components/Loading';
 import ProTreeSelect from '@/components/ProTreeSelect';
 import { getDepts } from '@/api';
 import { statusOptions, sexOptions } from '@/utils/options';
-import arrayToTree from '@/utils/arrayToTree';
+import arrayToTree from 'array-to-tree';
 import useRequest from '@ahooksjs/use-request';
 const layout = {
   labelCol: { span: 6 },
@@ -18,7 +18,7 @@ interface Props {
 const makeData = data => {
   return arrayToTree(
     data.map(item => ({ parentId: item.parentId, value: item.deptId, label: item.deptName })),
-    { parentId: 'parentId', id: 'value' }
+    { parentProperty: 'parentId', customID: 'value' }
   );
 };
 
@@ -47,7 +47,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
         <Input placeholder="请输入" />
       </Form.Item>
       <Form.Item name="deptId" label="归属部门" rules={[{ required: true }]}>
-        <ProTreeSelect placeholder='请选择' dataSource={makeData(data?.data)} />
+        <ProTreeSelect placeholder="请选择" dataSource={makeData(data?.data)} />
       </Form.Item>
       <Form.Item name="phone" label="手机号码" rules={[{ required: true }]}>
         <Input placeholder="请输入" />

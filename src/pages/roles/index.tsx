@@ -85,7 +85,7 @@ const Roles = () => {
     const mod = modal({
       title: '修改角色',
       width: 640,
-      content: <UpdateForm saveRef={r => (formRef = r)} initialValues={records} />,
+      content: <UpdateForm saveRef={r => (formRef = r)} id={records.roleId} />,
       onOk
     });
 
