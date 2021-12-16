@@ -163,7 +163,7 @@ const Depts = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => [
+        toolBarRender={() => 
           <Space>
             <Button type="primary" key="primary" onClick={() => onAdd({ deptId: 0 })}>
               添加
@@ -172,7 +172,7 @@ const Depts = () => {
               刷新
             </Button>
           </Space>
-        ]}
+        }
       />
     </>
   );

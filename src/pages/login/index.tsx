@@ -11,7 +11,7 @@ import styles from './index.module.less';
 import { ReactComponent as LogoSvg } from '@/assets/logo.svg';
 import useRequest from '@ahooksjs/use-request';
 
-const LoginForm: FC = () => {
+const Login: FC = () => {
   const [form] = Form.useForm();
   const { data: vcode, run: getVcode } = useRequest(getUserVcode, { formatResult: res => res.data });
   const loginFn = useRequest(login, { manual: true });
@@ -23,7 +23,8 @@ const LoginForm: FC = () => {
     logout();
 
     if (localStorage.getItem('remember') === '1') {
-      form.setFieldsValue({ username: 1, remember: true });
+      const defaultUserName = localStorage.getItem('username');
+      form.setFieldsValue({ username: defaultUserName, remember: true });
     }
   }, []);
 
@@ -98,4 +99,4 @@ const LoginForm: FC = () => {
   );
 };
 
-export default LoginForm;
+export default Login;

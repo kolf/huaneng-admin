@@ -17,6 +17,9 @@ interface Props {
 }
 
 const makeData = data => {
+  if (!data) {
+    return [];
+  }
   return data.map(item => ({ parentId: item.parentId, value: item.menuId, label: item.menuName }));
 };
 
@@ -33,8 +36,6 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   if (loading) {
     return <Loading />;
   }
-
-  console.log(data,menuData, 'data');
 
   return (
     <Form

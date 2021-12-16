@@ -163,15 +163,15 @@ const Roles = () => {
       render(text, records) {
         return (
           <Space>
-            <a onClick={onUpdate.bind(this, records)}>
+            <a key="update" onClick={onUpdate.bind(this, records)}>
               <EditOutlined />
               修改
             </a>
-            <a onClick={onDelete.bind(this, records)}>
+            <a key="delete" onClick={onDelete.bind(this, records)}>
               <DeleteOutlined />
               删除
             </a>
-            <a onClick={setUsers.bind(this, records)}>
+            <a key="setUsers" onClick={setUsers.bind(this, records)}>
               <AuditOutlined />
               分配用户
             </a>
@@ -196,16 +196,16 @@ const Roles = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => [
+        toolBarRender={() => (
           <Space>
-            <Button type="primary" key="primary" onClick={() => onAdd({ roleId: 0 })}>
+            <Button key="add" type="primary" key="primary" onClick={() => onAdd({ roleId: 0 })}>
               添加
             </Button>
-            <Button icon={<ReloadOutlined />} onClick={() => handleSearch({})}>
+            <Button key="reload" icon={<ReloadOutlined />} onClick={() => handleSearch({})}>
               刷新
             </Button>
           </Space>
-        ]}
+        )}
       />
     </>
   );

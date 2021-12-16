@@ -123,13 +123,13 @@ const SystemLogs = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => [
+        toolBarRender={() => (
           <Space>
             <Button icon={<ReloadOutlined />} onClick={() => handleSearch({})}>
               刷新
             </Button>
           </Space>
-        ]}
+        )}
       />
     </>
   );

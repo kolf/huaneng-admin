@@ -27,6 +27,7 @@ interface ProTableProps {
   isTree?: boolean;
   initialValues?: any;
   rowKey?: string;
+  colSize?: number;
   columns: ColumnsProps[];
   headerTitle: string;
   loading: boolean;
@@ -41,7 +42,7 @@ const layout = {
   wrapperCol: { span: 19 }
 };
 
-const colSize = 8;
+const defaultColSize = 12;
 
 const ProTable: React.FC<ProTableProps> = ({
   headerTitle,
@@ -51,6 +52,7 @@ const ProTable: React.FC<ProTableProps> = ({
   dataSource,
   search,
   pagination,
+  colSize = defaultColSize,
   toolBarRender,
   rowKey = 'id'
 }) => {
@@ -62,23 +64,23 @@ const ProTable: React.FC<ProTableProps> = ({
     const count = expand ? fields.length : 5;
     return fields
       .filter((f, index) => index < count)
-      .map(col => (
-        <Col span={colSize} key={col.dataIndex}>
-          <Form.Item name={col.dataIndex} label={col.title} {...layout} {...col.formItemProps}>
-            {renderInput(col)}
+      .map(field => (
+        <Col span={colSize} key={field.dataIndex}>
+          <Form.Item name={field.dataIndex} label={field.title} {...layout} {...field.formItemProps}>
+            {renderInput(field)}
           </Form.Item>
         </Col>
       ));
   }, [columns, expand]);
 
-  const renderInput = ({ valueType, ...restProps }) => {
+  const renderInput = ({ valueType, dataIndex, render, ...restProps }) => {
     switch (valueType) {
       case 'input':
-        return <Input allowClear placeholder="请输入" {...restProps} />;
+        return <Input allowClear key={dataIndex} placeholder="请输入" {...restProps} />;
       case 'searchSelect':
-        return <SearchSelect placeholder="请选择" {...restProps} />;
+        return <SearchSelect key={dataIndex} placeholder="请选择" {...restProps} />;
       case 'dateRange':
-        return <RangePicker style={{ width: '100%' }} />;
+        return <RangePicker key={dataIndex} style={{ width: '100%' }} />;
       default:
         break;
     }
@@ -112,8 +114,8 @@ const ProTable: React.FC<ProTableProps> = ({
           <Row gutter={24}>
             {renderFormItems()}
             <Col
-              span={colSize}
-              push={(24 / colSize - 1 - (fields.length % (24 / colSize))) * colSize}
+              span={defaultColSize}
+              push={(24 / defaultColSize - 1 - (fields.length % (24 / defaultColSize))) * defaultColSize}
               style={{ textAlign: 'right', paddingRight: 4 }}
             >
               <div style={{ marginBottom: 24 }}>

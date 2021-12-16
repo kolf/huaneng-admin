@@ -174,7 +174,7 @@ const Menus = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => [
+        toolBarRender={() => 
           <Space>
             <Button type="primary" key="primary" onClick={() => onAdd({ menuId: 0 })}>
               添加
@@ -183,7 +183,7 @@ const Menus = () => {
               刷新
             </Button>
           </Space>
-        ]}
+        }
       />
     </>
   );
