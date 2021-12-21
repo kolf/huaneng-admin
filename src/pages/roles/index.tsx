@@ -37,7 +37,7 @@ const Roles = () => {
       title: '添加角色',
       width: 640,
       content: (
-        <UpdateForm saveRef={r => (formRef = r)} initialValues={{ ...defaultValues, parentId: records.roleId }} />
+        <UpdateForm saveRef={r => (formRef = r)} />
       ),
       onOk
     });

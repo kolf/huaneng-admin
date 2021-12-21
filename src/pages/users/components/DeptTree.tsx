@@ -13,14 +13,16 @@ const makeData = data => {
   if (!data) {
     return [];
   }
-  return arrayToTree(
-    data.map(item => ({
-      key: item.deptId,
-      title: item.deptName,
-      parentId: item.parentId
-    })),
-    { customID: 'key', parentProperty: 'parentId' }
-  );
+  return [
+    {
+      key: 0,
+      title: '集团总部',
+      children: arrayToTree(
+        data.map(item => ({ parentId: item.parentId, key: item.deptId, title: item.deptName })),
+        { parentProperty: 'parentId', customID: 'key' }
+      )
+    }
+  ];
 };
 
 const DeptTree: React.FC<Props> = ({ onChange }) => {
@@ -34,15 +36,7 @@ const DeptTree: React.FC<Props> = ({ onChange }) => {
   if (loading) {
     return <Loading />;
   }
-  return (
-    <Tree
-      defaultExpandAll
-      showLine
-      defaultExpandedKeys={['0-0-0']}
-      onSelect={handleSelect}
-      treeData={makeData(data?.data)}
-    />
-  );
+  return <Tree defaultExpandAll showLine onSelect={handleSelect} treeData={makeData(data?.data)} />;
 };
 
 export default DeptTree;

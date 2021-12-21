@@ -86,18 +86,6 @@ const SystemLogs = () => {
       title: '操作时间',
       dataIndex: 'operTime',
       valueType: 'dateRange'
-    },
-    {
-      title: '操作',
-      dataIndex: 'userId',
-      width: 60,
-      render(text, records) {
-        return (
-          <Space>
-            <a>查看</a>
-          </Space>
-        );
-      }
     }
   ];
 

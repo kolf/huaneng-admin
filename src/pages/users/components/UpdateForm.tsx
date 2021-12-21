@@ -58,9 +58,6 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       <Form.Item name="userName" label="用户名称" rules={[{ required: true }]}>
         <Input placeholder="请输入" />
       </Form.Item>
-      <Form.Item name="password" label="用户密码" rules={[{ required: true }]}>
-        <Input.Password placeholder="请输入" />
-      </Form.Item>
       <Form.Item name="sex" label="用户性别" rules={[{ required: true }]}>
         <Radio.Group options={sexOptions} />
       </Form.Item>

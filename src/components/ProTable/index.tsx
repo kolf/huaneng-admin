@@ -37,12 +37,8 @@ interface ProTableProps {
   pagination?: any;
 }
 
-const layout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 19 }
-};
 
-const defaultColSize = 12;
+const defaultColSize = 6;
 
 const ProTable: React.FC<ProTableProps> = ({
   headerTitle,
@@ -66,7 +62,7 @@ const ProTable: React.FC<ProTableProps> = ({
       .filter((f, index) => index < count)
       .map(field => (
         <Col span={colSize} key={field.dataIndex}>
-          <Form.Item name={field.dataIndex} label={field.title} {...layout} {...field.formItemProps}>
+          <Form.Item name={field.dataIndex} label={field.title} {...field.formItemProps}>
             {renderInput(field)}
           </Form.Item>
         </Col>
@@ -114,8 +110,8 @@ const ProTable: React.FC<ProTableProps> = ({
           <Row gutter={24}>
             {renderFormItems()}
             <Col
-              span={defaultColSize}
-              push={(24 / defaultColSize - 1 - (fields.length % (24 / defaultColSize))) * defaultColSize}
+              span={colSize}
+              push={(24 / colSize - 1 - (fields.length % (24 / colSize))) * colSize}
               style={{ textAlign: 'right', paddingRight: 4 }}
             >
               <div style={{ marginBottom: 24 }}>

@@ -13,7 +13,7 @@ const layout = {
 
 interface Props {
   saveRef: any;
-  id: number;
+  id?: number;
 }
 
 const makeData = data => {
@@ -26,14 +26,17 @@ const makeData = data => {
 const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   const [form] = Form.useForm();
   const { data: menuData } = useRequest(() => getMenus({}));
-  const { data, loading } = useRequest(() => getRole({ roleId: id }), { ready: menuData });
+  const { data, loading, run } = useRequest(() => getRole({ roleId: id }), { ready: menuData, manual: true });
   const [values, setValues] = React.useState(data?.data);
 
   React.useEffect(() => {
     saveRef(form);
-  }, [form]);
+    if (id) {
+      run();
+    }
+  }, [form, id]);
 
-  if (loading) {
+  if (id && loading) {
     return <Loading />;
   }
 
@@ -41,7 +44,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
     <Form
       form={form}
       name="control-hooks"
-      initialValues={data?.data}
+      initialValues={id && data?.data}
       {...layout}
       onValuesChange={newValue => setValues({ ...values, ...newValue })}
     >

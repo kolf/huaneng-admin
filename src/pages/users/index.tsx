@@ -20,6 +20,20 @@ const makeData = data => {
   return data;
 };
 
+const makeParams = params => {
+  return Object.entries(params).reduce((result, item) => {
+    const [key, value] = item;
+    if (key === 'deptId' && value === 0) {
+      return result;
+    } else {
+      result[key] = value;
+    }
+    // if(){}
+    //  result[key] = nextValue
+    return result;
+  }, {});
+};
+
 const defaultValues = {
   menuType: 0,
   status: 0,
@@ -32,7 +46,7 @@ const Users = () => {
     pageNumber: 1,
     pageSize: 10
   });
-  const { data, error, loading } = useRequest(() => getUsers(params), {
+  const { data, error, loading } = useRequest(() => getUsers(makeParams(params)), {
     refreshDeps: [params],
     formatResult: res => res.data
   });
@@ -113,7 +127,7 @@ const Users = () => {
   }, []);
 
   const setRoles = useCallback(async records => {
-    console.log(records.userId);
+    // console.log(records.userId);
 
     let formRef = null;
     const mod = modal({
@@ -162,14 +176,19 @@ const Users = () => {
       }
       // textWrap: 'word-break'
     },
-    // { title: '部门', dataIndex: 'deptId' },
+    {
+      title: '部门',
+      dataIndex: 'deptId',
+      render(text, record) {
+        const { dept } = record;
+        return dept ? dept.deptName : '无';
+      }
+    },
     {
       title: '手机号码',
       dataIndex: 'phone',
-      valueType: 'input'
-      // render(text) {
-      //   return <div style={{ width: 64 }}>{text}</div>;
-      // }
+      valueType: 'input',
+      width: 100
     },
     {
       title: '性别',
@@ -235,7 +254,7 @@ const Users = () => {
         <ProTable
           headerTitle="用户列表"
           rowKey="userId"
-          colSize={12}
+          colSize={8}
           columns={columns}
           loading={loading}
           dataSource={makeData(data?.list)}
