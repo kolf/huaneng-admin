@@ -93,7 +93,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues = defaultValues })
         </Col>
         <Col span={12}>
           <Form.Item name="orderNum" label="显示排序" rules={[{ required: true }]} {...layout2}>
-            <InputNumber placeholder="0" />
+            <InputNumber min={0} placeholder="请输入" />
           </Form.Item>
         </Col>
         <Col span={12}>

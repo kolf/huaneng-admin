@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { deleteRole, updateRole, addRole, getRoles, setRoleUsers } from '@/api';
-import { RoleParams } from '@/models/role';
+import { deleteDict, updateDict, addDict, getDicts } from '@/api/dict.api';
+import { DictParams } from '@/models/dict';
 import { Button, Space, Modal, Tag, message } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateForm from './components/UpdateForm';
 import UpdateUsers from './components/UpdateUsers';
 import { statusOptions } from '@/utils/options';
@@ -18,15 +18,9 @@ const makeData = data => {
   return data;
 };
 
-const defaultValues = {
-  menuType: 0,
-  status: 0,
-  isFrame: 0
-};
-
-const Roles = () => {
-  const [params, setParams] = useState<RoleParams>({ pageSize: 10 });
-  const { data, error, loading } = useRequest(() => getRoles(params), {
+const Dicts = () => {
+  const [params, setParams] = useState<DictParams>({ pageSize: 10 });
+  const { data, error, loading } = useRequest(() => getDicts(params), {
     refreshDeps: [params],
     formatResult: res => res.data
   });
@@ -34,11 +28,9 @@ const Roles = () => {
   const onAdd = useCallback(records => {
     let formRef = null;
     const mod = modal({
-      title: '添加角色',
-      width: 640,
-      content: (
-        <UpdateForm saveRef={r => (formRef = r)} />
-      ),
+      title: '添加字典',
+      width: 540,
+      content: <UpdateForm saveRef={r => (formRef = r)} />,
       onOk
     });
 
@@ -46,7 +38,7 @@ const Roles = () => {
       const values = await formRef.validateFields();
       mod.confirmLoading();
       try {
-        const res = await addRole(values);
+        const res = await addDict(values);
         if (res.code !== 200) {
           throw new Error(res.message);
         }
@@ -62,13 +54,13 @@ const Roles = () => {
   const onDelete = useCallback(data => {
     Modal.confirm({
       title: '系统提示',
-      content: `是否确认删除名称为${data.roleName}的数据项？`,
+      content: `是否确认删除名称为${data.dictLabel}的数据项？`,
       onOk
     });
 
     async function onOk() {
       try {
-        const res = await deleteRole(data.roleId);
+        const res = await deleteDict(data.dictCode);
         if (res.code !== 200) {
           throw new Error(res.message);
         }
@@ -83,9 +75,9 @@ const Roles = () => {
   const onUpdate = useCallback(records => {
     let formRef = null;
     const mod = modal({
-      title: '修改角色',
-      width: 640,
-      content: <UpdateForm saveRef={r => (formRef = r)} id={records.roleId} />,
+      title: '修改字典',
+      width: 540,
+      content: <UpdateForm saveRef={r => (formRef = r)} id={records.dictCode} />,
       onOk
     });
 
@@ -93,39 +85,11 @@ const Roles = () => {
       const values = await formRef.validateFields();
       mod.confirmLoading();
       try {
-        const res = await updateRole({ ...values, roleId: records.roleId });
+        const res = await updateDict({ ...values, dictCode: records.dictCode });
         if (res.code !== 200) {
           throw new Error(res.message);
         }
         message.success(`修改成功！`);
-        handleSearch({});
-      } catch (error) {
-        message.error(error.message);
-      }
-      mod.close();
-    }
-  }, []);
-
-  const setUsers = useCallback(async records => {
-    let formRef = null;
-    const mod = modal({
-      title: '分配用户',
-      content: <UpdateUsers saveRef={r => (formRef = r)} id={records.roleId} />,
-      onOk
-    });
-
-    async function onOk() {
-      const values = await formRef.validateFields();
-      mod.confirmLoading();
-      try {
-        const res = await setRoleUsers({
-          roleId: records.roleId,
-          userIds: values.userIds.join(',')
-        });
-        if (res.code !== 200) {
-          throw new Error(res.message);
-        }
-        message.success(`设置成功！`);
         handleSearch({});
       } catch (error) {
         message.error(error.message);
@@ -139,8 +103,11 @@ const Roles = () => {
   };
 
   const columns = [
-    { title: '角色名称', dataIndex: 'roleName', valueType: 'input' },
-    { title: '备注', dataIndex: 'remark' },
+    { title: '字典键值', dataIndex: 'dictValue', valueType: 'input' },
+    { title: '字典标签', dataIndex: 'dictLabel', valueType: 'input' },
+    { title: '排序', dataIndex: 'dictSort' },
+
+    { title: '字典类型', dataIndex: 'dictType' },
     {
       title: '状态',
       dataIndex: 'status',
@@ -155,10 +122,11 @@ const Roles = () => {
         }
       }
     },
+    { title: '备注', dataIndex: 'remark' },
     { title: '创建时间', dataIndex: 'createTime', valueType: 'dateRange' },
     {
       title: '操作',
-      dataIndex: 'roleId',
+      dataIndex: 'dictCode',
       width: 190,
       render(text, records) {
         return (
@@ -171,10 +139,6 @@ const Roles = () => {
               <DeleteOutlined />
               删除
             </a>
-            <a key="setUsers" onClick={setUsers.bind(this, records)}>
-              <AuditOutlined />
-              分配用户
-            </a>
           </Space>
         );
       }
@@ -184,8 +148,8 @@ const Roles = () => {
   return (
     <>
       <ProTable
-        headerTitle="角色列表"
-        rowKey="roleId"
+        headerTitle="字典列表"
+        rowKey="dictCode"
         columns={columns}
         loading={loading}
         dataSource={makeData(data?.list)}
@@ -198,7 +162,7 @@ const Roles = () => {
         }}
         toolBarRender={() => (
           <Space>
-            <Button key="add" type="primary" key="primary" onClick={() => onAdd({ roleId: 0 })}>
+            <Button key="add" type="primary" key="primary" onClick={() => onAdd({ dictCode: 0 })}>
               添加
             </Button>
             <Button key="reload" icon={<ReloadOutlined />} onClick={() => handleSearch({})}>
@@ -211,4 +175,4 @@ const Roles = () => {
   );
 };
 
-export default Roles;
+export default Dicts;

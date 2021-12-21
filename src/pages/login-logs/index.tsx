@@ -74,24 +74,13 @@ const SystemLogs = () => {
         }
       }
     },
+    { title: '操作信息', dataIndex: 'msg' },
     {
       title: '登陆时间',
       dataIndex: 'operTime',
       valueType: 'dateRange',
       render(text, records) {
         return records.loginTime;
-      }
-    },
-    {
-      title: '操作',
-      dataIndex: 'userId',
-      width: 60,
-      render(text, records) {
-        return (
-          <Space>
-            <a>查看</a>
-          </Space>
-        );
       }
     }
   ];

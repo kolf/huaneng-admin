@@ -37,12 +37,7 @@ interface ProTableProps {
   pagination?: any;
 }
 
-const layout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 19 }
-};
-
-const defaultColSize = 8;
+const defaultColSize = 6;
 
 const ProTable: React.FC<ProTableProps> = ({
   headerTitle,

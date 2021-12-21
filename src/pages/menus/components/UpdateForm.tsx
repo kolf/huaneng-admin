@@ -97,7 +97,7 @@ const UpdateForm: React.FC<Props> = ({ saveRef, initialValues }) => {
       </Form.Item>
 
       <Form.Item name="orderNum" label="显示排序" rules={[{ required: true }]}>
-        <InputNumber placeholder="0" />
+        <InputNumber min={0} placeholder="请输入" />
       </Form.Item>
 
       {values.menuType === 1 && [

@@ -16,6 +16,8 @@ import Menus from '@/pages/menus';
 import Users from '@/pages/users';
 import Depts from '@/pages/depts';
 import Roles from '@/pages/roles';
+import Params from '@/pages/params';
+import Dicts from '@/pages/dicts';
 import SystemLogs from '@/pages/system-logs';
 import LoginLogs from '@/pages/login-logs';
 
@@ -43,6 +45,14 @@ const routeList: RouteObject[] = [
       {
         path: '/system/dept',
         element: <PrivateRoute element={<Depts />} />
+      },
+      {
+        path: '/system/dict',
+        element: <PrivateRoute element={<Dicts />} />
+      },
+      {
+        path: '/system/param',
+        element: <PrivateRoute element={<Params />} />
       },
       {
         path: '/system/log',
