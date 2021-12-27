@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
 import { deleteDept, updateDept, addDept, getDepts } from '@/api';
-import { DeptParams } from '@/models/dept';
+import { DeptParams, DeptResult } from '@/models/dept';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, ReloadOutlined } from '@ant-design/icons';
 import UpdateForm from './components/UpdateForm';
@@ -12,7 +12,12 @@ import arrayToTree from 'array-to-tree';
 import { statusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
 
-const makeData = data => {
+const defaultData = {
+  data: [],
+  totalCount: 0
+};
+
+const makeData = (data: DeptResult[]) => {
   if (!data) {
     return [];
   }
@@ -27,7 +32,7 @@ const defaultValues = {
 
 const Depts = () => {
   const [params, setParams] = useState<DeptParams>({});
-  const { data, error, loading } = useRequest(() => getDepts(params), { refreshDeps: [params] });
+  const { data, loading } = useRequest<ApiResult<DeptResult[]>>(() => getDepts(params), { refreshDeps: [params] });
 
   const onAdd = useCallback(records => {
     let formRef = null;
@@ -108,48 +113,50 @@ const Depts = () => {
     setParams({ ...params, ...values });
   };
 
-  const columns = [
-    { title: '部门名称', dataIndex: 'deptName', valueType: 'input' },
-    { title: '排序', dataIndex: 'orderNum' },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      valueType: 'searchSelect',
-      options: statusOptions,
-      render(text) {
-        if (text === 0) {
-          return <Tag color="success">正常</Tag>;
+  const columns = React.useMemo(() => {
+    return [
+      { title: '部门名称', dataIndex: 'deptName', valueType: 'input' },
+      { title: '排序', dataIndex: 'orderNum' },
+      {
+        title: '状态',
+        dataIndex: 'status',
+        valueType: 'searchSelect',
+        options: statusOptions,
+        render(text) {
+          if (text === 0) {
+            return <Tag color="success">正常</Tag>;
+          }
+          if (text === 1) {
+            return <Tag color="error">停用</Tag>;
+          }
         }
-        if (text === 1) {
-          return <Tag color="error">停用</Tag>;
+      },
+      { title: '创建时间', dataIndex: 'createTime' },
+      {
+        title: '操作',
+        dataIndex: 'deptId',
+        width: 160,
+        render(text, records) {
+          return (
+            <Space>
+              <a onClick={e => onUpdate(records)}>
+                <EditOutlined />
+                修改
+              </a>
+              <a onClick={e => onAdd(records)}>
+                <PlusOutlined />
+                新增
+              </a>
+              <a onClick={e => onDelete(records)}>
+                <DeleteOutlined />
+                删除
+              </a>
+            </Space>
+          );
         }
       }
-    },
-    { title: '创建时间', dataIndex: 'createTime' },
-    {
-      title: '操作',
-      dataIndex: 'deptId',
-      width: 160,
-      render(text, records) {
-        return (
-          <Space>
-            <a onClick={e => onUpdate(records)}>
-              <EditOutlined />
-              修改
-            </a>
-            <a onClick={e => onAdd(records)}>
-              <PlusOutlined />
-              新增
-            </a>
-            <a onClick={e => onDelete(records)}>
-              <DeleteOutlined />
-              删除
-            </a>
-          </Space>
-        );
-      }
-    }
-  ];
+    ];
+  }, []);
 
   return (
     <>
@@ -163,7 +170,7 @@ const Depts = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => 
+        toolBarRender={() => (
           <Space>
             <Button type="primary" key="primary" onClick={() => onAdd({ deptId: 0 })}>
               添加
@@ -172,7 +179,7 @@ const Depts = () => {
               刷新
             </Button>
           </Space>
-        }
+        )}
       />
     </>
   );

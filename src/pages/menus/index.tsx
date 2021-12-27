@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import {deleteMenu, updateMenu, addMenu, getMenus } from '@/api';
+import { deleteMenu, updateMenu, addMenu, getMenus } from '@/api';
 import { MenuParams } from '@/models/menu';
 import { Button, Space, Modal, Tag, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -12,6 +12,11 @@ import arrayToTree from 'array-to-tree';
 
 import { statusOptions } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
+
+const defaultData = {
+  data: [],
+  totalCount: 0
+};
 
 const makeData = data => {
   if (!data) {
@@ -29,7 +34,7 @@ const defaultValues = {
 
 const Menus = () => {
   const [params, setParams] = useState<MenuParams>({});
-  const { data, error, loading } = useRequest(() => getMenus(params), { refreshDeps: [params] });
+  const { data = defaultData, loading } = useRequest(() => getMenus(params), { refreshDeps: [params] });
 
   const onAdd = useCallback(records => {
     let formRef = null;
@@ -174,7 +179,7 @@ const Menus = () => {
           collapsed: false,
           onFinish: handleSearch
         }}
-        toolBarRender={() => 
+        toolBarRender={() => (
           <Space>
             <Button type="primary" key="primary" onClick={() => onAdd({ menuId: 0 })}>
               添加
@@ -183,7 +188,7 @@ const Menus = () => {
               刷新
             </Button>
           </Space>
-        }
+        )}
       />
     </>
   );

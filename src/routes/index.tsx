@@ -14,7 +14,7 @@ import { useRoutes, RouteObject } from 'react-router-dom';
 import NotFound from '@/pages/404';
 import Menus from '@/pages/menus';
 import Users from '@/pages/users';
-import Depts from '@/pages/depts';
+import Dept from '@/pages/depts';
 import Roles from '@/pages/roles';
 import Params from '@/pages/params';
 import Dicts from '@/pages/dicts';
@@ -44,7 +44,7 @@ const routeList: RouteObject[] = [
       },
       {
         path: '/system/dept',
-        element: <PrivateRoute element={<Depts />} />
+        element: <PrivateRoute element={<Dept />} />
       },
       {
         path: '/system/dict',

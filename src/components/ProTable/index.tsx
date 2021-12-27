@@ -115,26 +115,24 @@ const ProTable: React.FC<ProTableProps> = ({
             >
               <div style={{ marginBottom: 24 }}>
                 {search.collapsed && (
-                  <>
-                    <a
-                      style={{ fontSize: 12 }}
-                      onClick={() => {
-                        setExpand(!expand);
-                      }}
-                    >
-                      {expand ? (
-                        <>
-                          <UpOutlined />
-                          <span className={styles.expandBtn}>收缩</span>
-                        </>
-                      ) : (
-                        <>
-                          <DownOutlined />
-                          <span className={styles.expandBtn}>展开</span>
-                        </>
-                      )}
-                    </a>
-                  </>
+                  <a
+                    style={{ fontSize: 12 }}
+                    onClick={() => {
+                      setExpand(!expand);
+                    }}
+                  >
+                    {expand ? (
+                      <>
+                        <UpOutlined />
+                        <span className={styles.expandBtn}>收缩</span>
+                      </>
+                    ) : (
+                      <>
+                        <DownOutlined />
+                        <span className={styles.expandBtn}>展开</span>
+                      </>
+                    )}
+                  </a>
                 )}
                 <Button type="primary" htmlType="submit">
                   查询

@@ -1,18 +1,16 @@
-import React, { FC } from "react";
-import { useNavigate } from "react-router-dom";
-import { Result, Button } from "antd";
-import { useLocation } from "react-router";
+import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Result, Button } from 'antd';
+import { useLocation } from 'react-router';
 
 interface Props {
   element?: any;
 }
 
-const PrivateRoute: FC<Props> = (props) => {
+const PrivateRoute: FC<Props> = props => {
   const logged = true;
   const navigate = useNavigate();
   const location = useLocation();
-
-  console.log(props, "props");
 
   return logged ? (
     props.element
@@ -25,9 +23,9 @@ const PrivateRoute: FC<Props> = (props) => {
         <Button
           type="primary"
           onClick={() =>
-            navigate("/dashboard", {
+            navigate('/dashboard', {
               replace: true,
-              state: { from: location.pathname },
+              state: { from: location.pathname }
             })
           }
         >

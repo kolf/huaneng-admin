@@ -4,6 +4,7 @@ import { LoginParams, LoginResult } from '@/models/login';
 import { MenuResult, MenuParams } from '@/models/menu';
 import { UserResult, UserParams } from '@/models/user';
 import { RoleResult, RoleParams } from '@/models/role';
+import { DeptResult, DeptParams } from '@/models/dept';
 
 // 菜单查询
 export const getMenus = (params: UserParams) => {
@@ -22,8 +23,8 @@ export const deleteMenu = (id: number) => {
   return request.delete<ApiResult<any>>(`/api/v1/sysMenu/${id}`);
 };
 // 部门查询
-export const getDepts = (params: UserParams) => {
-  return request.post<ApiResult<UserResult[]>>(`/api/v1/sysDept/list`, params);
+export const getDepts = (params: DeptParams) => {
+  return request.post<ApiResult<DeptResult[]>>(`/api/v1/sysDept/list`, params);
 };
 
 export const updateDept = (params: MenuParams) => {
@@ -70,6 +71,15 @@ export const getUsers = (params: UserParams) => {
 export const getUser = (params: UserParams) => {
   return request.get<ApiResult<UserResult>>(`/api/v1/sysUser/${params.userId}`);
 };
+
+export const getUserRoles = (params: UserParams) => {
+  return request.get<ApiResult<UserResult>>(`/api/v1/sysUser/authRole/${params.userId}`);
+};
+
+export const setUserRoles = (params: UserParams) => {
+  return request.put<ApiResult<UserResult>>(`/api/v1/sysUser/authRole?${qs.stringify(params)}`);
+};
+
 
 export const updateUser = (params: UserParams) => {
   return request.put<ApiResult<any>>(`/api/v1/sysUser/`, params);

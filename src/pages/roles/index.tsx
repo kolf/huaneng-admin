@@ -11,6 +11,11 @@ import { statusOptions } from '@/utils/options';
 import modal from '@/utils/modal';
 import useRequest from '@ahooksjs/use-request';
 
+const defaultData = {
+  list: [],
+  totalCount: 0
+};
+
 const makeData = data => {
   if (!data) {
     return [];
@@ -18,15 +23,9 @@ const makeData = data => {
   return data;
 };
 
-const defaultValues = {
-  menuType: 0,
-  status: 0,
-  isFrame: 0
-};
-
 const Roles = () => {
   const [params, setParams] = useState<RoleParams>({ pageSize: 10 });
-  const { data, error, loading } = useRequest(() => getRoles(params), {
+  const { data = defaultData, loading } = useRequest(() => getRoles(params), {
     refreshDeps: [params],
     formatResult: res => res.data
   });
@@ -36,9 +35,7 @@ const Roles = () => {
     const mod = modal({
       title: '添加角色',
       width: 640,
-      content: (
-        <UpdateForm saveRef={r => (formRef = r)} />
-      ),
+      content: <UpdateForm saveRef={r => (formRef = r)} />,
       onOk
     });
 

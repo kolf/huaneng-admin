@@ -28,7 +28,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(
   response => {
     const data = response.data;
-    console.log('response:', response);
+    // console.log('response:', response);
     if (response.status === 200) {
       if (data.code === 401) {
         window.location.href = '/login'
@@ -49,7 +49,7 @@ axios.interceptors.response.use(
     return Promise.reject(new Error(response.statusText || 'Error'));
   },
   error => {
-    console.log('err:', error, error.response); // for debug
+    // console.log('err:', error, error.response); // for debug
     if (error.response && error.response.status) {
       switch (error.response.status) {
         // 401: 未登录

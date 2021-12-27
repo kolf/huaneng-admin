@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Row, Col, Select, TreeSelect, Radio, Checkbox } from 'antd';
 import Loading from '@/components/Loading';
 import CheckboxGroup from '@/components/CheckboxGroup';
-import { getRoles, getUser } from '@/api';
+import { getRoles, getUser, getUserRoles } from '@/api';
 import useRequest from '@ahooksjs/use-request';
 const layout = {
   labelCol: { span: 6 },
@@ -24,16 +24,20 @@ const makeData = data => {
   }));
 };
 
-let initialValues = null;
+const makeInitialValues = data => {
+  return {
+    roleIds: data.reduce((result, item) => {
+      if (item.flag) {
+        result.push(item.roleId);
+      }
+      return result;
+    }, [])
+  };
+};
 
 const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
   const [form] = Form.useForm();
-  const { data, loading, error } = useRequest(async () => {
-    const res1 = await getUser({ userId: id });
-    const res2 = await getRoles({ pageSize: 10000 });
-    initialValues = { roleIds: res1.data.roleIds };
-    return res2.data;
-  });
+  const { data, loading, error } = useRequest(async () => getUserRoles({ userId: id }));
 
   React.useEffect(() => {
     saveRef(form);
@@ -47,10 +51,12 @@ const UpdateForm: React.FC<Props> = ({ saveRef, id }) => {
     return null;
   }
 
+  console.log(makeInitialValues(data?.data), 'makeInitialValues(data?.data)');
+
   return (
-    <Form form={form} name="control-hooks" {...layout} initialValues={initialValues}>
+    <Form form={form} name="control-hooks" {...layout} initialValues={makeInitialValues(data?.data)}>
       <Form.Item name="roleIds">
-        <CheckboxGroup options={makeData(data?.list)} />
+        <CheckboxGroup options={makeData(data?.data)} />
       </Form.Item>
     </Form>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import ProTable from '@/components/ProTable';
-import { deleteUser, updateUser, addUser, getUser, getUsers } from '@/api';
+import { deleteUser, updateUser, addUser, setUserRoles, getUsers } from '@/api';
 import { UserParams } from '@/models/user';
 import { Button, Space, Modal, Tag, Card, message } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined, AuditOutlined, ReloadOutlined } from '@ant-design/icons';
@@ -12,6 +12,11 @@ import modal from '@/utils/modal';
 import { statusOptions, sexEnum } from '@/utils/options';
 import useRequest from '@ahooksjs/use-request';
 import styles from './index.module.less';
+
+const defaultData = {
+  list: [],
+  totalCount: 0
+};
 
 const makeData = data => {
   if (!data) {
@@ -46,7 +51,7 @@ const Users = () => {
     pageNumber: 1,
     pageSize: 10
   });
-  const { data, error, loading } = useRequest(() => getUsers(makeParams(params)), {
+  const { data = defaultData, loading } = useRequest(() => getUsers(makeParams(params)), {
     refreshDeps: [params],
     formatResult: res => res.data
   });
@@ -128,11 +133,11 @@ const Users = () => {
 
   const setRoles = useCallback(async records => {
     // console.log(records.userId);
-
+    const userId = records.userId;
     let formRef = null;
     const mod = modal({
       title: '分配角色',
-      content: <UpdateRoles saveRef={r => (formRef = r)} id={records.userId} />,
+      content: <UpdateRoles saveRef={r => (formRef = r)} id={userId} />,
       onOk
     });
 
@@ -140,7 +145,7 @@ const Users = () => {
       const values = await formRef.validateFields();
       mod.confirmLoading();
       try {
-        const res = await updateUser({ ...records, ...values });
+        const res = await setUserRoles({ userId, roleIds: values.roleIds.join(',') });
         if (res.code !== 200) {
           throw new Error(res.message);
         }
